@@ -13,7 +13,9 @@ import {
   getPlayer,
   subscribeAudioState,
   type AudioState,
+  type LoopListener,
   type PlayerSnapshot,
+  type PulseListener,
 } from '../engine/player';
 import type { Piece, Timeline } from '../engine/types';
 
@@ -38,6 +40,11 @@ export interface PlayerControls {
   setSolo: (partId: string | null) => void;
   /** ← / →: one chart line back or forward. */
   jumpLine: (delta: number) => void;
+  /** Pulse and loop events with audio times, for the drills. Each returns an unsubscribe. */
+  subscribePulses: (listener: PulseListener) => () => void;
+  subscribeLoops: (listener: LoopListener) => () => void;
+  /** The audio clock now; stamp taps with it. */
+  now: () => number;
 }
 
 /**
@@ -77,6 +84,9 @@ export function usePlayer(piece: Piece, focusPartId: string): PlayerControls {
       setMuted: (partId: string, on: boolean) => player.setMuted(partId, on),
       setSolo: (partId: string | null) => player.setSolo(partId),
       jumpLine: (delta: number) => player.jumpLine(delta),
+      subscribePulses: player.subscribePulses,
+      subscribeLoops: player.subscribeLoops,
+      now: () => player.now(),
     }),
     [player],
   );

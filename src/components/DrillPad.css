@@ -1,0 +1,164 @@
+/* DrillPad: sticky bottom area; with tapping on it fills the bottom third of the screen. */
+.drill-pad {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  margin: 0 calc(-1 * var(--space-4));
+  padding: var(--space-2) var(--space-4) calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 -6px 18px rgba(27, 27, 27, 0.08);
+}
+
+.drill-pad--tapping {
+  min-height: 33vh;
+}
+
+.drill-pad-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+/* The count-in or the sound gate, over everything in the pad. */
+.drill-pad-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3);
+  background: var(--surface);
+}
+
+.drill-pad-halves {
+  display: grid;
+  flex: 1;
+  grid-template-columns: 1fr auto 1fr;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  min-height: 140px;
+}
+
+.drill-pad-half {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-height: var(--tap-min);
+  border: 3px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--cell-bg);
+  color: var(--fg);
+  font-family: var(--font);
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background-color var(--dur-fast);
+}
+
+.drill-pad-half:active:not(:disabled) {
+  background: var(--playhead);
+  color: var(--obang-hanji);
+  border-color: var(--playhead);
+}
+
+.drill-pad-half:focus-visible {
+  outline: 3px solid var(--playhead);
+  outline-offset: 2px;
+}
+
+.drill-pad-half:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.drill-pad-hand {
+  font-size: calc(var(--hand-size) + 16px);
+  font-weight: var(--weight-heavy);
+  line-height: 1;
+}
+
+.drill-pad-key {
+  padding: 0 var(--space-2);
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  font-size: var(--small-size);
+  font-weight: 600;
+}
+
+.drill-pad-flash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 96px;
+  text-align: center;
+}
+
+.drill-pad-hint {
+  color: var(--fg-muted);
+  font-size: var(--small-size);
+  font-weight: 600;
+}
+
+.drill-pad-verdict {
+  font-size: var(--text-size);
+  font-weight: var(--weight-heavy);
+  animation: drill-pad-pop 150ms ease-out;
+}
+
+.drill-pad-verdict--on-time {
+  color: var(--fg);
+}
+
+.drill-pad-verdict--early {
+  color: var(--playhead);
+}
+
+.drill-pad-verdict--late {
+  color: #a37b12;
+}
+
+.drill-pad-verdict--miss,
+.drill-pad-verdict--wrong-hand {
+  color: var(--danger);
+}
+
+@keyframes drill-pad-pop {
+  from {
+    transform: scale(1.25);
+    opacity: 0.4;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .drill-pad-halves {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .drill-pad-flash {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    min-height: 24px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .drill-pad {
+    box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.4);
+  }
+
+  .drill-pad-verdict--late {
+    color: var(--obang-yellow);
+  }
+}

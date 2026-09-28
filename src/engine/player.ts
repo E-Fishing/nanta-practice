@@ -44,6 +44,7 @@ import {
   LOOP_OFF,
   loopRange,
   preRollUnits,
+  sameLoop,
   TEMPO_STEP_BPM,
   tempoRange,
   type BpmRange,
@@ -97,6 +98,16 @@ export interface PlayerSnapshot {
 }
 
 export type PlayerListener = () => void;
+
+/** A pulse handed to the scheduler: it sounds at audio time `time`, during loop `loop` (0 = first pass). */
+export interface PulseEvent {
+  pulse: TimelinePulse;
+  time: number;
+  loop: number;
+}
+export type PulseListener = (event: PulseEvent) => void;
+/** The Transport wrapped to the loop start at audio time `time`; `loopCount` loops are now complete. */
+export type LoopListener = (loopCount: number, time: number) => void;
 
 /** Seconds a tempo change ramps over, so it never restarts or jolts playback (SPEC §6). */
 export const TEMPO_RAMP_SECONDS = 0.1;
@@ -194,6 +205,8 @@ export class Player {
   private readonly draw = Tone.getDraw();
   private bankInstance: SoundBank | null = null;
   private readonly listeners = new Set<PlayerListener>();
+  private readonly pulseListeners = new Set<PulseListener>();
+  private readonly loopListeners = new Set<LoopListener>();
   private snapshot: PlayerSnapshot = IDLE;
 
   private piece: Piece | null = null;
@@ -249,6 +262,30 @@ export class Player {
   };
 
   readonly getSnapshot = (): PlayerSnapshot => this.snapshot;
+
+  /**
+   * Hear every pulse as it is scheduled (up to the Transport lookahead ahead of its audio
+   * time), with that time: what the drills score taps against. Keep listeners cheap.
+   */
+  readonly subscribePulses = (listener: PulseListener): (() => void) => {
+    this.pulseListeners.add(listener);
+    return () => {
+      this.pulseListeners.delete(listener);
+    };
+  };
+
+  /** Hear every loop wrap. */
+  readonly subscribeLoops = (listener: LoopListener): (() => void) => {
+    this.loopListeners.add(listener);
+    return () => {
+      this.loopListeners.delete(listener);
+    };
+  };
+
+  /** The audio clock right now, the clock pulse times are on. Stamp taps with this. */
+  now(): number {
+    return Tone.immediate();
+  }
 
   private set(patch: Partial<PlayerSnapshot>): void {
     this.snapshot = { ...this.snapshot, ...patch };
@@ -347,6 +384,10 @@ export class Player {
     this.lastFired = { index: pulse.index, time };
     this.position = pulse.index;
     if (Tone.immediate() - time <= MAX_LATE_SECONDS) this.sound(pulse, time);
+    if (this.pulseListeners.size > 0) {
+      const event: PulseEvent = { pulse, time, loop: this.snapshot.loopCount };
+      for (const listener of this.pulseListeners) listener(event);
+    }
     this.draw.schedule(() => {
       if (generation === this.generation && this.snapshot.state === 'playing') this.set({ pulse, cued: false, countIn: null });
     }, time);
@@ -419,7 +460,9 @@ export class Player {
         bpm = next;
       }
     }
-    this.set({ loopCount: this.snapshot.loopCount + 1, bpm });
+    const loopCount = this.snapshot.loopCount + 1;
+    this.set({ loopCount, bpm });
+    for (const listener of this.loopListeners) listener(loopCount, time);
   };
 
   // -- Controls -------------------------------------------------------------
@@ -548,7 +591,7 @@ export class Player {
    * @throws RangeError for a spec the loaded piece cannot satisfy (see `loopRange`).
    */
   setLoop(spec: LoopSpec): void {
-    if (this.timeline === null) return;
+    if (this.timeline === null || sameLoop(spec, this.snapshot.loop)) return;
     const range = loopRange(this.timeline, spec);
     this.range = range;
     this.applyLoopPoints(range);

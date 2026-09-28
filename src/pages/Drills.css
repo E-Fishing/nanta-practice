@@ -1,0 +1,43 @@
+/* Drills page: nav, title, part selector, setup, stats, the chart, then the sticky pad. */
+.drills {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.drills-nav {
+  display: flex;
+  gap: var(--space-4);
+  font-weight: 600;
+}
+
+.drills-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.drills-title {
+  margin: 0;
+  font-size: var(--hand-size);
+  font-weight: var(--weight-heavy);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.drills-meta {
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: var(--text-size);
+  font-weight: 600;
+}
+
+.drills-status {
+  margin: 0;
+  color: var(--fg-muted);
+  font-weight: 600;
+}
+
+.drills > .drill-pad {
+  margin-top: var(--space-4);
+}

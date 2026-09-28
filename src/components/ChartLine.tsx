@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import type { Line } from '../engine/types';
 import Cell from './Cell';
+import type { CellState } from './cellState';
 import { cellView, type CellView } from './cellView';
 import './ChartLine.css';
 
@@ -16,12 +17,14 @@ export interface ChartLineProps {
   number: number;
   /** The part's instrument default surface; hits on other surfaces are boxed. */
   defaultSurface: string;
-  /** Stable key the chart uses to find this row's element for auto-scroll. */
+  /** "sectionIndex:lineIndex": the chart uses it to find this row for auto-scroll; cell keys extend it. */
   lineKey: string;
   /** Playhead position when it is on this line; null otherwise (the common case). */
   cursor?: LineCursor;
   /** Inside the current loop. */
   looped?: boolean;
+  /** Drill decorations for the whole chart; this line looks up its own cells. */
+  states?: ReadonlyMap<string, CellState>;
 }
 
 /** Which of the cell slots this line actually uses, so unused rows collapse line-wide. */
@@ -43,10 +46,11 @@ function slotClasses(groups: CellView[][]): string {
 }
 
 /** The period the club writes after a line: a short breath before the next one. */
-function Breath({ pulses, current }: { pulses: number; current: boolean }) {
-  const label = `Breath: ${pulses} pulse${pulses === 1 ? '' : 's'} of silence`;
+function Breath({ pulses, current, tapped }: { pulses: number; current: boolean; tapped: boolean }) {
+  const label = `Breath: ${pulses} pulse${pulses === 1 ? '' : 's'} of silence${tapped ? ', tapped by mistake' : ''}`;
+  const className = ['chart-breath', current ? 'chart-breath--current' : '', tapped ? 'chart-breath--tapped' : ''].filter(Boolean).join(' ');
   return (
-    <span className={current ? 'chart-breath chart-breath--current' : 'chart-breath'} role="img" aria-label={label} title={label}>
+    <span className={className} role="img" aria-label={label} title={label}>
       .
     </span>
   );
@@ -59,9 +63,10 @@ function Breath({ pulses, current }: { pulses: number; current: boolean }) {
  *
  * Memoized: during playback only the row the playhead enters or leaves re-renders.
  */
-function ChartLine({ line, number, defaultSurface, lineKey, cursor = null, looped = false }: ChartLineProps) {
+function ChartLine({ line, number, defaultSurface, lineKey, cursor = null, looped = false, states }: ChartLineProps) {
   const groups = line.groups.map((group) => group.map((cell) => cellView(cell, defaultSurface)));
   const breath = line.pauseAfter > 0;
+  const pauseState = states?.get(`${lineKey}:pause`);
   const className = [
     'chart-line',
     breath ? 'chart-line--breath' : '',
@@ -81,9 +86,11 @@ function ChartLine({ line, number, defaultSurface, lineKey, cursor = null, loope
           <span key={g} className="chart-group">
             {group.map((view, c) => {
               const on = cursor?.kind === 'cell' && cursor.groupIndex === g && cursor.cellIndex === c;
-              return <Cell key={c} view={view} current={on && !cursor.cued} cued={on && cursor.cued} />;
+              return <Cell key={c} view={view} current={on && !cursor.cued} cued={on && cursor.cued} state={states?.get(`${lineKey}:${g}:${c}`)} />;
             })}
-            {breath && g === groups.length - 1 ? <Breath pulses={line.pauseAfter} current={cursor?.kind === 'pause'} /> : null}
+            {breath && g === groups.length - 1 ? (
+              <Breath pulses={line.pauseAfter} current={cursor?.kind === 'pause'} tapped={(pauseState?.heat?.extra ?? 0) > 0} />
+            ) : null}
           </span>
         ))}
       </div>
@@ -106,6 +113,7 @@ export default memo(ChartLine, (prev, next) => {
     prev.defaultSurface === next.defaultSurface &&
     prev.lineKey === next.lineKey &&
     (prev.looped ?? false) === (next.looped ?? false) &&
+    prev.states === next.states &&
     sameCursor(prev.cursor ?? null, next.cursor ?? null)
   );
 });

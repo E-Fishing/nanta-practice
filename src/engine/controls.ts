@@ -49,6 +49,20 @@ export type LoopSpec =
 
 export const LOOP_OFF: LoopSpec = { kind: 'off' };
 
+/** Structural equality of two loop specs. */
+export function sameLoop(a: LoopSpec, b: LoopSpec): boolean {
+  if (a.kind !== b.kind) return false;
+  switch (a.kind) {
+    case 'off':
+    case 'piece':
+      return true;
+    case 'section':
+      return b.kind === 'section' && a.sectionId === b.sectionId;
+    case 'lines':
+      return b.kind === 'lines' && a.sectionId === b.sectionId && a.partId === b.partId && a.from === b.from && a.to === b.to;
+  }
+}
+
 /** A range of timeline pulse indices, `end` exclusive. */
 export interface PulseRange {
   start: number;

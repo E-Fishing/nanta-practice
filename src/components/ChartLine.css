@@ -90,3 +90,8 @@
   box-shadow: inset 3px 0 0 var(--playhead);
   padding-left: var(--space-1);
 }
+
+/* A tap that landed in the breath: the period turns red. */
+.chart-breath--tapped {
+  color: var(--danger);
+}

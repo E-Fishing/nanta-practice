@@ -134,3 +134,60 @@
   color: var(--playhead);
   box-shadow: 0 0 0 2px var(--playhead);
 }
+
+/* Drills: hidden notation keeps the square so the grid still reads as pulses. */
+.cell-slot--hidden {
+  visibility: hidden;
+}
+
+.cell--hidden {
+  border: 1.5px dashed var(--border);
+  background: transparent;
+}
+
+.cell--hidden.cell--rest .cell-letter {
+  border-color: transparent;
+}
+
+.cell--current.cell--hidden {
+  background: var(--playhead);
+  border-color: var(--playhead);
+}
+
+/* Tap heat: a bar along the bottom. Blue = rushing, yellow = dragging, red = missed. */
+.cell {
+  position: relative;
+}
+
+.cell-heat {
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  bottom: 0;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--heat-color, transparent);
+  opacity: var(--heat-alpha, 1);
+}
+
+.cell--heat-early {
+  --heat-color: var(--obang-blue);
+}
+
+.cell--heat-late {
+  --heat-color: var(--obang-yellow);
+}
+
+.cell--heat-on-time {
+  --heat-color: var(--fg);
+}
+
+.cell--heat-miss {
+  --heat-color: var(--danger);
+}
+
+.cell--heat-miss.cell--hit .cell-letter,
+.cell--heat-miss.cell--rest .cell-letter,
+.cell--heat-miss.cell--extender .cell-letter {
+  color: var(--danger);
+}

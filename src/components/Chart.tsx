@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import type { LineRef } from '../engine/controls';
 import type { Part, Piece, PulseSlot, TimelinePulse } from '../engine/types';
+import type { CellState } from './cellState';
 import ChartLine, { type LineCursor } from './ChartLine';
 import SectionHeader from './SectionHeader';
 import './Chart.css';
@@ -9,6 +10,8 @@ export interface ChartProps {
   piece: Piece;
   /** The part to draw. v1 shows one part at a time (SPEC §4.2). */
   part: Part;
+  /** Only these sections (ids), in piece order. Default: all. */
+  sectionIds?: readonly string[];
   /** Pulse under the playhead, or null when nothing is highlighted. */
   pulse?: TimelinePulse | null;
   /** `pulse` marks where playback will start (outlined) rather than what is sounding (filled). */
@@ -18,6 +21,8 @@ export interface ChartProps {
   /** Lines of this part inside the loop, and sections the loop touches (marked in the margin). */
   loopedLines?: readonly LineRef[];
   loopedSections?: readonly number[];
+  /** Drill decorations by `chartCellKey()` / `chartPauseKey()`. */
+  cellStates?: ReadonlyMap<string, CellState>;
   /** Height of the bar covering the bottom of the viewport, for the auto-scroll check. */
   bottomInset?: number;
 }
@@ -52,11 +57,13 @@ function cursorFor(slot: PulseSlot | undefined, lineIndex: number, cued: boolean
 export default function Chart({
   piece,
   part,
+  sectionIds,
   pulse = null,
   cued = false,
   autoScroll = false,
   loopedLines = NO_LINES,
   loopedSections = NO_SECTIONS,
+  cellStates,
   bottomInset = 0,
 }: ChartProps) {
   const instrument = piece.instruments.find((i) => i.id === part.instrument);
@@ -81,6 +88,7 @@ export default function Chart({
   return (
     <div className="chart" aria-label={`${piece.title}, ${part.name}`} ref={rootRef}>
       {piece.sections.map((section, sectionIndex) => {
+        if (sectionIds !== undefined && !sectionIds.includes(section.id)) return null;
         const lines = section.lines[part.id];
         const active = pulse !== null && pulse.sectionIndex === sectionIndex;
         return (
@@ -101,6 +109,7 @@ export default function Chart({
                       lineKey={key}
                       cursor={active ? cursorFor(slot, lineIndex, cued) : null}
                       looped={loopedKeys.has(key)}
+                      states={cellStates}
                     />
                   );
                 })}

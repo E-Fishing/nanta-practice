@@ -10,6 +10,7 @@ import {
   lineStarts,
   loopRange,
   preRollUnits,
+  sameLoop,
   tempoRange,
 } from './controls';
 import { expandPiece } from './expand';
@@ -107,6 +108,19 @@ describe('loopRange', () => {
     const build = real.sections.find((s) => s.sectionId === 'build')!;
     expect(loopRange(real, { kind: 'section', sectionId: 'build' })).toEqual({ start: build.start, end: build.end });
     expect(build.end - build.start).toBe(32);
+  });
+});
+
+describe('sameLoop', () => {
+  it('compares specs structurally', () => {
+    expect(sameLoop({ kind: 'off' }, { kind: 'off' })).toBe(true);
+    expect(sameLoop({ kind: 'piece' }, { kind: 'off' })).toBe(false);
+    expect(sameLoop({ kind: 'section', sectionId: 'a' }, { kind: 'section', sectionId: 'a' })).toBe(true);
+    expect(sameLoop({ kind: 'section', sectionId: 'a' }, { kind: 'section', sectionId: 'b' })).toBe(false);
+    const lines = { kind: 'lines', sectionId: 'a', partId: 'p1', from: 1, to: 2 } as const;
+    expect(sameLoop(lines, { ...lines })).toBe(true);
+    expect(sameLoop(lines, { ...lines, to: 3 })).toBe(false);
+    expect(sameLoop(lines, { kind: 'section', sectionId: 'a' })).toBe(false);
   });
 });
 
