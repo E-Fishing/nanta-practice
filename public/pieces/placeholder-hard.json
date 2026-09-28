@@ -1,0 +1,129 @@
+{
+  "id": "placeholder-hard",
+  "title": "Placeholder (Hard)",
+  "pulseBpm": 325,
+  "linePause": 2,
+  "instruments": [
+    {
+      "id": "drum",
+      "name": "Drum",
+      "defaultSurface": "head",
+      "surfaces": {
+        "head": { "sound": "low",   "gueum": { "B": "덩" } },
+        "rim":  { "sound": "click", "gueum": { "R": "딱", "L": "딱", "B": "딱" } }
+      }
+    }
+  ],
+  "parts": [
+    { "id": "hard", "name": "Hard part", "instrument": "drum", "lead": false }
+  ],
+  "sections": [
+    {
+      "id": "open",
+      "name": "Opening",
+      "lines": {
+        "hard": [
+          {
+            "groups": [ ["B{덩}", "B>{덩}"], ["L_", "R_", "L_", "R_", "L_", "R_", "L", "L"] ],
+            "note": "underlined pairs are soft"
+          },
+          {
+            "groups": [ ["R'", "L", "R", "L"], ["R'", "L", "R", "L"], ["R'", "L", "R", "L"] ],
+            "note": "1-2-3-4 ×3, small accent on each 1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a",
+      "name": "Pattern A",
+      "lines": {
+        "hard": [
+          { "groups": [ ["R", "L>", "R"], ["L", "R>", "L"], ["R", "L>", "R"], ["L", "R>", "L"] ] },
+          { "groups": [ ["R>", "R", "R"], ["L>", "R", "R"], ["L>", "~", "R>", "~", "L", "L"] ] },
+          {
+            "groups": [ ["R'", "L", "R", "L"], ["R'", "L", "R", "L"], ["R'", "L", "R", "L"] ],
+            "note": "1-2-3-4 ×3"
+          },
+          { "groups": [ ["R", "L>", "R"], ["L", "R>", "L"], ["R", "L>", "R"], ["L", "R>", "L"] ] }
+        ]
+      }
+    },
+    {
+      "id": "cross",
+      "name": "Cross phrase",
+      "lines": {
+        "hard": [
+          {
+            "groups": [ ["R^", "R", "R"], ["L>^", "R", "R"], ["L", "Rx"], ["L", "L"] ],
+            "note": "right arm crosses to the left"
+          },
+          { "groups": [ ["R>^", "~", "R"], ["L>^", "R", "R"], ["L", "Rx"], ["L", "L"] ] },
+          {
+            "groups": [ ["R", "L>x", "~"], ["R", "L", "R"], ["L^", "~", "R>", "~"], ["R", "R"] ],
+            "note": "TODO confirm: left arm crosses on the circled L"
+          }
+        ]
+      }
+    },
+    {
+      "id": "lift",
+      "name": "Lifts",
+      "lines": {
+        "hard": [
+          {
+            "groups": [ ["L^", "R>^", "~", "R", "R"], ["L^", "R", "R"], ["L^", "R", "R"], ["L^", "R>", "~", "R", "R"] ],
+            "note": "TODO confirm lift positions against the chart"
+          }
+        ]
+      }
+    },
+    {
+      "id": "build",
+      "name": "Build ×8",
+      "repeat": 8,
+      "crescendo": true,
+      "lines": {
+        "hard": [
+          { "groups": [ ["L^", "R", "R", "~"] ], "pauseAfter": 0, "note": "start very small, get louder every rep; lift the L every rep" }
+        ]
+      }
+    },
+    {
+      "id": "exit",
+      "name": "Exit",
+      "lines": {
+        "hard": [
+          { "groups": [ ["L", "Rx", "L", "R", "Lx", "R", "L", "R", "L", "~"], ["R", "L", "R", "L"] ] }
+        ]
+      }
+    },
+    {
+      "id": "cross2",
+      "name": "Cross phrase 2",
+      "lines": {
+        "hard": [
+          { "groups": [ ["R^", "~", "R"], ["L^", "R", "R"], ["L", "Rx"], ["L", "L"] ] },
+          {
+            "groups": [ ["R", "Lx", "~"], ["R", "R"], ["L", "R:rim{딱}", "L"] ],
+            "note": "TODO confirm: left arm crosses; boxed 딱 is a right-hand rim hit"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ending",
+      "name": "Ending",
+      "tempoScale": 0.5,
+      "lines": {
+        "hard": [
+          {
+            "groups": [ ["L/R{그덩}"], ["R/L{그덩}"], ["B{덩}", "B:rim{딱}"] ],
+            "note": "그덩 is a flam: 그 is a soft pickup right before 덩"
+          },
+          { "groups": [ ["B{덩}", "~", "B:rim{딱}", "B:rim{딱}"] ], "pauseAfter": 0 }
+        ]
+      }
+    }
+  ]
+}

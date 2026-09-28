@@ -1,0 +1,58 @@
+/* Design tokens (SPEC.md §5). Obangsaek palette, type sizes, spacing. */
+:root {
+  --obang-blue: #2a5caa;
+  --obang-red: #c8352e;
+  --obang-yellow: #e9b949;
+  --obang-black: #1b1b1b;
+  --obang-hanji: #f6f1e7;
+
+  /* Roles: light mode */
+  --bg: var(--obang-hanji);
+  --fg: var(--obang-black);
+  --fg-muted: #6b665c;
+  --surface: #fffdf8;
+  --border: rgba(27, 27, 27, 0.16);
+  --playhead: var(--obang-blue);
+  --danger: var(--obang-red);
+  --reveal: var(--obang-yellow);
+  --link: var(--obang-blue);
+
+  /* Type */
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+  --weight-heavy: 800;
+  --hand-size: 28px;
+  --gueum-size: 14px;
+  --text-size: 16px;
+  --small-size: 13px;
+
+  /* Spacing and shape */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --radius: 8px;
+  --tap-min: 56px;
+
+  /* Motion: nothing longer than 150ms except the playhead. */
+  --dur-fast: 120ms;
+}
+
+@media (max-width: 600px) {
+  :root {
+    --hand-size: 22px;
+    --gueum-size: 12px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141414;
+    --fg: var(--obang-hanji);
+    --fg-muted: #a8a196;
+    --surface: #1e1d1b;
+    --border: rgba(246, 241, 231, 0.18);
+    --link: #7ea6e6;
+  }
+}

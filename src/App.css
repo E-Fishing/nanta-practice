@@ -1,0 +1,54 @@
+/* App shell: reset + page frame. Component styles live next to their components. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: var(--text-size);
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--link);
+}
+
+.app {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.app-title {
+  font-weight: var(--weight-heavy);
+  font-size: 20px;
+  text-decoration: none;
+  color: var(--fg);
+}
+
+.app-main {
+  flex: 1;
+  padding: var(--space-4);
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
