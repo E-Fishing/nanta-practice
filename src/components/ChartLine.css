@@ -1,0 +1,76 @@
+/* ChartLine: one row of the chart. Groups are clusters; only the gap between groups wraps. */
+.chart-line {
+  /* Height of the marks-above slot (see Cell.css) plus the cell's top padding; the line
+     number and the breath period use it to sit level with the hand letters. */
+  --above-offset: calc(var(--mark-size) + 3px + 2px);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--space-2);
+  row-gap: var(--space-1);
+  align-items: start;
+  padding: var(--space-1) 0;
+}
+
+/* Extra breathing room below a line that ends with a pause. */
+.chart-line--breath {
+  padding-bottom: var(--space-3);
+}
+
+/* Slots no cell in the line uses collapse for the whole line, so rows stay aligned but tight. */
+.chart-line--no-above {
+  --above-offset: 2px;
+}
+
+.chart-line--no-above .cell-above,
+.chart-line--no-below .cell-below,
+.chart-line--no-gueum .cell-gueum {
+  display: none;
+}
+
+/* Small muted line number, aligned with the hand letters. */
+.chart-line-number {
+  min-width: 1.4em;
+  padding-top: var(--above-offset);
+  color: var(--fg-muted);
+  font-size: var(--small-size);
+  font-weight: 600;
+  line-height: calc(var(--hand-size) + var(--letter-pad));
+  text-align: right;
+}
+
+.chart-line-groups {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-2) var(--group-gap);
+  min-width: 0;
+  /* A group longer than the screen scrolls inside its line, never the whole page. */
+  overflow-x: auto;
+}
+
+/* A group never breaks across rows. */
+.chart-group {
+  display: inline-flex;
+  flex: none;
+  gap: var(--cell-gap);
+}
+
+/* The period the club writes after a line: inside the last group, level with the letters. */
+.chart-breath {
+  align-self: flex-start;
+  margin-left: var(--space-1);
+  padding-top: var(--above-offset);
+  color: var(--fg-muted);
+  font-size: var(--hand-size);
+  font-weight: var(--weight-heavy);
+  line-height: calc(var(--hand-size) + var(--letter-pad));
+  user-select: none;
+}
+
+.chart-line-note {
+  grid-column: 2;
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: var(--small-size);
+  line-height: 1.3;
+}

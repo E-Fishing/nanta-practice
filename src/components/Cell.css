@@ -1,0 +1,115 @@
+/* Cell: one pulse. Four fixed-height slots keep every cell in a line aligned. */
+.cell {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: var(--cell-width);
+  padding: 2px 1px 3px;
+  border-radius: var(--cell-radius);
+  background: var(--cell-bg);
+  color: var(--fg);
+  font-weight: var(--weight-heavy);
+  line-height: 1;
+  user-select: none;
+}
+
+/* Slot 1: marks above the letter (triangle, up-arrow, unknown marks). */
+.cell-above {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+  height: calc(var(--mark-size) + 3px);
+}
+
+.cell-mark {
+  width: var(--mark-size);
+  height: var(--mark-size);
+  flex: none;
+}
+
+.cell-mark--arrow {
+  height: calc(var(--mark-size) + 2px);
+}
+
+.cell-extra {
+  font-size: var(--small-size);
+  line-height: 1;
+}
+
+/* Slot 2: the hand letter. The box is a square so the strong-accent circle is round. */
+.cell-letter {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: calc(var(--hand-size) + var(--letter-pad));
+  height: calc(var(--hand-size) + var(--letter-pad));
+  padding: 0 2px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  font-size: var(--hand-size);
+}
+
+.cell-letter--circled {
+  border-color: currentColor;
+}
+
+.cell-letter--underlined::after {
+  content: '';
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  bottom: 1px;
+  height: 2px;
+  background: currentColor;
+}
+
+/* Flam: the grace hand small, tucked before the main letter. */
+.cell-grace {
+  align-self: flex-start;
+  margin-right: 1px;
+  font-size: var(--gueum-size);
+  line-height: 1.2;
+}
+
+/* Slot 3: marks below the letter (cross-arm X). */
+.cell-below {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: calc(var(--mark-size) + 2px);
+}
+
+/* Slot 4: the gu-eum syllable. */
+.cell-gueum {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(var(--gueum-size) + 6px);
+  padding: 0 3px;
+  border: 1.5px solid transparent;
+  border-radius: 3px;
+  font-size: var(--gueum-size);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* A non-default surface (rim): boxed, like the club's boxed 딱. */
+.cell-gueum--boxed {
+  border-color: currentColor;
+}
+
+/* Rest: an empty square. Extender: a large muted tilde. */
+.cell--rest .cell-letter {
+  border: 1.5px dashed var(--border);
+  border-radius: var(--cell-radius);
+}
+
+.cell--extender {
+  color: var(--fg-muted);
+}
+
+.cell--extender .cell-letter {
+  font-size: calc(var(--hand-size) + 4px);
+}

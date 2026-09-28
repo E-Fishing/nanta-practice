@@ -1,0 +1,48 @@
+/* SectionHeader: name + badges under a thin dancheong stripe (SPEC §5). */
+.section-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 3px solid transparent;
+  border-image: var(--dancheong-stripe) 3;
+  border-image-width: 3px 0 0 0;
+}
+
+.section-header-name {
+  margin: 0;
+  font-size: 20px;
+  font-weight: var(--weight-heavy);
+  line-height: 1.2;
+}
+
+.section-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 1px var(--space-2);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  color: var(--fg);
+  font-size: var(--small-size);
+  font-weight: var(--weight-heavy);
+  line-height: 1.4;
+}
+
+.section-header-badge--cresc {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.section-header-hairpin {
+  width: 22px;
+  height: 8px;
+}
+
+.section-header-pulses {
+  margin-left: auto;
+  color: var(--fg-muted);
+  font-size: var(--small-size);
+  font-weight: 600;
+}

@@ -1,0 +1,24 @@
+/* Chart: sections stacked vertically, each a header followed by its lines. */
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.chart-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.chart-lines {
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-silent {
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: var(--text-size);
+  font-style: italic;
+}

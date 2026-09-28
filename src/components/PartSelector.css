@@ -1,0 +1,54 @@
+/* PartSelector: a row of radio-style buttons, one per part. */
+.part-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.part-selector-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: calc(var(--tap-min) - var(--space-3));
+  padding: var(--space-2) var(--space-4);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: var(--text-size);
+  font-weight: var(--weight-heavy);
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast),
+    background-color var(--dur-fast);
+}
+
+.part-selector-button:hover {
+  border-color: var(--fg);
+}
+
+.part-selector-button:focus-visible {
+  outline: 3px solid var(--playhead);
+  outline-offset: 2px;
+}
+
+.part-selector-button--selected {
+  background: var(--playhead);
+  border-color: var(--playhead);
+  color: var(--obang-hanji);
+}
+
+.part-selector-lead {
+  padding: 0 var(--space-2);
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  font-size: var(--small-size);
+  line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+  .part-selector-button {
+    min-height: var(--tap-min);
+  }
+}

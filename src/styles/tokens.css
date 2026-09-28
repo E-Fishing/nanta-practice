@@ -56,3 +56,39 @@
     --link: #7ea6e6;
   }
 }
+
+/* Chart cells (SPEC §4.2, §5). Widths derive from the hand letter size so phones scale down. */
+:root {
+  --cell-width: calc(var(--hand-size) + 10px);
+  --cell-gap: 2px;
+  --group-gap: var(--space-4);
+  --mark-size: 10px;
+  --cell-bg: rgba(27, 27, 27, 0.045);
+  --cell-radius: 6px;
+  /* Extra room around the letter (the strong-accent circle needs it). */
+  --letter-pad: 8px;
+  /* Thin dancheong stripe for section headers: the five obangsaek colors, restrained. */
+  --dancheong-stripe: repeating-linear-gradient(
+    90deg,
+    var(--obang-blue) 0 12px,
+    var(--obang-red) 12px 24px,
+    var(--obang-yellow) 24px 36px,
+    var(--obang-black) 36px 48px,
+    var(--obang-hanji) 48px 60px
+  );
+}
+
+/* Phones: tighter cells and group gaps so a 10-cell group fits beside the line number. */
+@media (max-width: 600px) {
+  :root {
+    --cell-width: calc(var(--hand-size) + 8px);
+    --group-gap: var(--space-3);
+    --letter-pad: 6px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cell-bg: rgba(246, 241, 231, 0.07);
+  }
+}
