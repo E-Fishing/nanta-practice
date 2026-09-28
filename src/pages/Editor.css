@@ -1,0 +1,195 @@
+/* Editor page (SPEC §4.4): nav, sticky toolbar, piece fields, setup, then the sections. */
+.editor {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.editor-nav {
+  display: flex;
+  gap: var(--space-4);
+  font-weight: 600;
+}
+
+.editor-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.editor-title {
+  margin: 0;
+  font-size: var(--hand-size);
+  font-weight: var(--weight-heavy);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.editor-help,
+.editor-status {
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: var(--small-size);
+  font-weight: 600;
+}
+
+.editor-setup {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.editor-setup-summary {
+  padding: var(--space-3) var(--space-4);
+  font-weight: var(--weight-heavy);
+  cursor: pointer;
+}
+
+.editor-setup-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.editor-sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.editor-add-section {
+  align-self: flex-start;
+}
+
+/* Drop target overlay while a file is dragged over the page. */
+.editor-drop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px dashed var(--playhead);
+  background: rgba(42, 92, 170, 0.12);
+  color: var(--playhead);
+  font-size: 24px;
+  font-weight: var(--weight-heavy);
+  pointer-events: none;
+}
+
+/* Shared form controls for the editor components (layout stays in each component's CSS). */
+.editor-label {
+  color: var(--fg-muted);
+  font-size: var(--small-size);
+  font-weight: var(--weight-heavy);
+  white-space: nowrap;
+}
+
+.editor-unit {
+  color: var(--fg-muted);
+  font-size: var(--small-size);
+  font-weight: 600;
+}
+
+.editor-input,
+.editor-select {
+  min-height: 40px;
+  padding: var(--space-1) var(--space-2);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: var(--text-size);
+  font-weight: 600;
+}
+
+.editor-input:focus-visible,
+.editor-select:focus-visible {
+  outline: 3px solid var(--playhead);
+  outline-offset: 1px;
+}
+
+.editor-input--id {
+  width: 130px;
+  font-family: ui-monospace, monospace;
+  font-size: var(--small-size);
+}
+
+.editor-input--number {
+  width: 84px;
+}
+
+.editor-input--invalid {
+  border-color: var(--danger);
+}
+
+.editor-select {
+  cursor: pointer;
+}
+
+.editor-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: var(--space-1) var(--space-3);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: var(--text-size);
+  font-weight: var(--weight-heavy);
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast),
+    background-color var(--dur-fast);
+}
+
+.editor-button:hover:not(:disabled) {
+  border-color: var(--fg);
+}
+
+.editor-button:focus-visible {
+  outline: 3px solid var(--playhead);
+  outline-offset: 2px;
+}
+
+.editor-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.editor-button--primary {
+  border-color: var(--playhead);
+  background: var(--playhead);
+  color: var(--obang-hanji);
+}
+
+.editor-button--small {
+  min-height: 36px;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--small-size);
+}
+
+.editor-button--icon {
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  font-size: var(--text-size);
+}
+
+.editor-button--danger:hover:not(:disabled) {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+@media (max-width: 600px) {
+  .editor-input,
+  .editor-select,
+  .editor-button {
+    min-height: 44px;
+  }
+}

@@ -1,0 +1,46 @@
+/* EditCell: a chart cell inside a button. Click cycles, hold or right-click opens the menu. */
+.edit-cell {
+  display: inline-flex;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: calc(var(--cell-radius) + 2px);
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+  transition: border-color var(--dur-fast);
+}
+
+.edit-cell:hover {
+  border-color: var(--fg-muted);
+}
+
+.edit-cell:focus-visible {
+  outline: 3px solid var(--playhead);
+  outline-offset: 1px;
+}
+
+.edit-cell--active {
+  border-color: var(--playhead);
+}
+
+/* A token the parser rejects (only possible in a file edited by hand): shown raw, in red. */
+.edit-cell--invalid {
+  border-color: var(--danger);
+}
+
+.edit-cell-raw {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--cell-width);
+  min-height: calc(var(--hand-size) + var(--letter-pad) + var(--mark-size) * 2);
+  padding: 0 var(--space-1);
+  color: var(--danger);
+  font-family: ui-monospace, monospace;
+  font-size: var(--small-size);
+  font-weight: var(--weight-heavy);
+}

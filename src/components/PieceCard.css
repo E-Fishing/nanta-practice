@@ -92,3 +92,15 @@
     min-height: var(--tap-min);
   }
 }
+
+/* A piece saved from the editor in this browser (SPEC §4.4). */
+.piece-card-local {
+  align-self: flex-start;
+  margin: calc(-1 * var(--space-2)) 0 0;
+  padding: 1px var(--space-2);
+  border: 1.5px solid var(--reveal);
+  border-radius: 999px;
+  color: var(--fg);
+  font-size: var(--small-size);
+  font-weight: var(--weight-heavy);
+}

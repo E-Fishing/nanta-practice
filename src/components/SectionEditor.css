@@ -1,0 +1,83 @@
+/* SectionEditor: header fields under the dancheong stripe, then the lines. */
+.section-editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.section-editor-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 3px solid transparent;
+  border-image: var(--dancheong-stripe) 3;
+  border-image-width: 3px 0 0 0;
+}
+
+.section-editor-name {
+  flex: 1 1 160px;
+  min-width: 120px;
+  font-size: 20px;
+  font-weight: var(--weight-heavy);
+}
+
+.section-editor-field {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.section-editor-field--cue {
+  flex: 1 1 200px;
+}
+
+.section-editor-field--cue .editor-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.section-editor-check {
+  font-size: var(--small-size);
+  font-weight: var(--weight-heavy);
+}
+
+.section-editor-check input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--playhead);
+}
+
+.section-editor-pulses {
+  color: var(--fg-muted);
+  font-size: var(--small-size);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.section-editor-pulses--mismatch {
+  color: var(--danger);
+}
+
+.section-editor-actions {
+  display: inline-flex;
+  gap: var(--space-1);
+  margin-left: auto;
+}
+
+.section-editor-lines {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-editor-silent {
+  margin: 0;
+  color: var(--fg-muted);
+  font-style: italic;
+}
+
+.section-editor-add-line {
+  align-self: flex-start;
+  margin-top: var(--space-2);
+}

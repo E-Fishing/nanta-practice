@@ -8,6 +8,8 @@ export interface PieceCardProps {
   timeline: Timeline;
   /** Latest practice date (YYYY-MM-DD) for the current member, or null for never. */
   lastPracticed: string | null;
+  /** Saved from the editor in this browser (it shadows any bundled file of the same id). */
+  local?: boolean;
 }
 
 /** Seconds as m:ss, rounded to the nearest second. */
@@ -23,11 +25,16 @@ function plural(count: number, noun: string): string {
 }
 
 /** One Library card. Pure display: everything comes in through props, nothing is fetched here. */
-export default function PieceCard({ piece, timeline, lastPracticed }: PieceCardProps) {
+export default function PieceCard({ piece, timeline, lastPracticed, local = false }: PieceCardProps) {
   const duration = formatDuration(unitsToSeconds(timeline.totalUnits, piece.pulseBpm));
   return (
     <article className="piece-card">
       <h2 className="piece-card-title">{piece.title}</h2>
+      {local ? (
+        <p className="piece-card-local" title="Saved from the editor. Only this browser has it until the file is added to public/pieces/.">
+          saved in this browser
+        </p>
+      ) : null}
       <ul className="piece-card-meta">
         <li>{plural(piece.sections.length, 'section')}</li>
         <li>{piece.pulseBpm} pulses/min</li>

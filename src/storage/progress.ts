@@ -6,11 +6,12 @@
  *    plus an optional per-section `history` of attempts for the accuracy-over-time charts.
  *  - `nanta.member.v1`:   the name typed into "Who's practicing?" on the Library page.
  *
- * Every storage access is wrapped so private mode, blocked storage, quota errors or a
- * missing `localStorage` (tests, SSR) degrade to "no progress" instead of throwing.
+ * Storage access goes through browserStorage.ts, so private mode, blocked storage, quota
+ * errors or a missing `localStorage` (tests, SSR) degrade to "no progress" instead of throwing.
  * Drills write through `recordAttempt()`; the Progress page exports, imports and merges.
  */
 import type { DrillMode } from '../engine/drills';
+import { isRecord, readItem, writeItem } from './browserStorage';
 
 export const PROGRESS_KEY = 'nanta.progress.v1';
 export const MEMBER_KEY = 'nanta.member.v1';
@@ -52,43 +53,6 @@ export type MemberProgress = Record<string, PieceProgress>;
 export interface ProgressStore {
   /** Keyed by member name exactly as typed. */
   members: Record<string, MemberProgress>;
-}
-
-// ---------------------------------------------------------------------------
-// Guarded storage access
-// ---------------------------------------------------------------------------
-
-function storage(): Storage | null {
-  try {
-    // Reading the property itself can throw (SecurityError) in sandboxed frames.
-    return globalThis.localStorage ?? null;
-  } catch {
-    return null;
-  }
-}
-
-function readItem(key: string): string | null {
-  try {
-    return storage()?.getItem(key) ?? null;
-  } catch {
-    return null;
-  }
-}
-
-function writeItem(key: string, value: string): boolean {
-  try {
-    const store = storage();
-    if (store === null) return false;
-    store.setItem(key, value);
-    return true;
-  } catch {
-    // Private mode or quota exceeded: progress is best-effort, never fatal.
-    return false;
-  }
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 // ---------------------------------------------------------------------------

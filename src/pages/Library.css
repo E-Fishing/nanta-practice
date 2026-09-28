@@ -35,3 +35,34 @@
 .library-item {
   min-width: 0;
 }
+
+/* Title row with the "New piece" link (SPEC §4.4). */
+.library-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.library-new {
+  display: inline-flex;
+  align-items: center;
+  min-height: calc(var(--tap-min) - var(--space-3));
+  padding: var(--space-2) var(--space-4);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--fg);
+  font-weight: var(--weight-heavy);
+  text-decoration: none;
+  transition: border-color var(--dur-fast);
+}
+
+.library-new:hover {
+  border-color: var(--fg);
+}
+
+.library-new:focus-visible {
+  outline: 3px solid var(--playhead);
+  outline-offset: 2px;
+}

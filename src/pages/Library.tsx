@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 import ErrorCard from '../components/ErrorCard';
 import MemberField from '../components/MemberField';
 import PieceCard from '../components/PieceCard';
@@ -19,7 +20,12 @@ export default function Library() {
 
   return (
     <section className="library">
-      <h1 className="library-title">Library</h1>
+      <div className="library-head">
+        <h1 className="library-title">Library</h1>
+        <Link className="library-new" to="/edit">
+          + New piece
+        </Link>
+      </div>
       <MemberField value={member} onChange={handleMemberChange} />
       {indexError !== null ? (
         <p className="library-status library-status--error" role="alert">
@@ -46,13 +52,14 @@ function LibraryEntry({ entry, member }: { entry: PieceEntryState; member: strin
     case 'loading':
       return <p className="library-status">Loading {entry.id}...</p>;
     case 'error':
-      return <ErrorCard pieceId={entry.id} message={entry.message} path={entry.path} />;
+      return <ErrorCard pieceId={entry.local ? `${entry.id} (saved in this browser)` : entry.id} message={entry.message} path={entry.path} />;
     case 'loaded':
       return (
         <PieceCard
           piece={entry.piece}
           timeline={entry.timeline}
           lastPracticed={getLastPracticed(member, entry.piece.id)}
+          local={entry.local}
         />
       );
   }

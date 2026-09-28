@@ -1,0 +1,114 @@
+/* CellMenu: a fixed popover next to the cell being edited. */
+.cell-menu {
+  position: fixed;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: min(360px, calc(100vw - 16px));
+  max-height: calc(100dvh - 16px);
+  overflow-y: auto;
+  padding: var(--space-3);
+  border: 2px solid var(--fg);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--fg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.cell-menu-row {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.cell-menu-row--actions {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--border);
+}
+
+.cell-menu-label {
+  font-size: var(--small-size);
+  font-weight: var(--weight-heavy);
+  color: var(--fg-muted);
+}
+
+.cell-menu-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.cell-menu-choice {
+  min-height: 36px;
+  padding: var(--space-1) var(--space-2);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: var(--small-size);
+  font-weight: var(--weight-heavy);
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast),
+    background-color var(--dur-fast);
+}
+
+.cell-menu-choice:hover {
+  border-color: var(--fg);
+}
+
+.cell-menu-choice[aria-pressed='true'] {
+  border-color: var(--playhead);
+  background: var(--playhead);
+  color: var(--obang-hanji);
+}
+
+.cell-menu-choice:focus-visible {
+  outline: 3px solid var(--playhead);
+  outline-offset: 2px;
+}
+
+.cell-menu-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 36px;
+  font-size: var(--small-size);
+  font-weight: 600;
+}
+
+.cell-menu-check input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--playhead);
+}
+
+.cell-menu-gueum {
+  max-width: 160px;
+}
+
+.cell-menu-token {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: var(--small-size);
+}
+
+.cell-menu-token code {
+  padding: 1px var(--space-1);
+  border-radius: 4px;
+  background: var(--cell-bg);
+  color: var(--fg);
+  font-weight: var(--weight-heavy);
+}
+
+.cell-menu-close {
+  margin-left: auto;
+}
