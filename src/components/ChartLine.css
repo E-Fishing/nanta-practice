@@ -74,3 +74,13 @@
   font-size: var(--small-size);
   line-height: 1.3;
 }
+
+/* Playhead inside a line pause: the breath period lights up. */
+.chart-breath--current {
+  color: var(--playhead);
+}
+
+/* The line under the playhead: a thin blue line number so the eye finds the row. */
+.chart-line--current .chart-line-number {
+  color: var(--playhead);
+}

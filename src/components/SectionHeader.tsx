@@ -3,6 +3,8 @@ import './SectionHeader.css';
 
 export interface SectionHeaderProps {
   section: Section;
+  /** 1-based repeat under the playhead when this section is playing, else null. */
+  rep?: number | null;
 }
 
 /** Crescendo hairpin: opens to the right, the way it is drawn on the chart. */
@@ -14,15 +16,22 @@ function Hairpin() {
   );
 }
 
-/** Section name, repeat count, crescendo marker and tempo scale (SPEC §4.2). */
-export default function SectionHeader({ section }: SectionHeaderProps) {
+/** Section name, repeat count ("rep 3 / 8" while playing), crescendo marker and tempo scale (SPEC §4.2). */
+export default function SectionHeader({ section, rep = null }: SectionHeaderProps) {
+  const active = rep !== null;
   return (
-    <header className="section-header">
+    <header className={active ? 'section-header section-header--active' : 'section-header'}>
       <h2 className="section-header-name">{section.name}</h2>
       {section.repeat > 1 ? (
-        <span className="section-header-badge" title={`Play ${section.repeat} times`}>
-          ×{section.repeat}
-        </span>
+        active ? (
+          <span className="section-header-badge section-header-badge--rep" aria-live="off">
+            rep {rep} / {section.repeat}
+          </span>
+        ) : (
+          <span className="section-header-badge" title={`Play ${section.repeat} times`}>
+            ×{section.repeat}
+          </span>
+        )
       ) : null}
       {section.crescendo ? (
         <span className="section-header-badge section-header-badge--cresc" title="Crescendo: start soft, get louder every repeat">

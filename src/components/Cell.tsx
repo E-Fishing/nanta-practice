@@ -3,6 +3,8 @@ import './Cell.css';
 
 export interface CellProps {
   view: CellView;
+  /** Under the playhead right now. */
+  current?: boolean;
 }
 
 /** Small accent: a filled triangle above the letter. */
@@ -59,9 +61,10 @@ function HitBody({ view }: { view: HitView }) {
  * One grid square = one pulse (SPEC §4.2). Every cell has the same four slots (marks above,
  * letter, marks below, syllable) so cells line up across a line whatever they contain.
  */
-export default function Cell({ view }: CellProps) {
+export default function Cell({ view, current = false }: CellProps) {
+  const className = ['cell', `cell--${view.kind}`, current ? 'cell--current' : ''].filter(Boolean).join(' ');
   return (
-    <span className={`cell cell--${view.kind}`} role="img" aria-label={view.label} title={view.label}>
+    <span className={className} role="img" aria-label={view.label} title={view.label} aria-current={current ? 'step' : undefined}>
       {view.kind === 'hit' ? (
         <HitBody view={view} />
       ) : (

@@ -113,3 +113,18 @@
 .cell--extender .cell-letter {
   font-size: calc(var(--hand-size) + 4px);
 }
+
+/* Playhead: the cell under the current pulse (SPEC §5: blue playhead, no transition so it stays crisp). */
+.cell--current {
+  background: var(--playhead);
+  color: var(--obang-hanji);
+  box-shadow: 0 0 0 2px var(--playhead);
+}
+
+.cell--current.cell--extender {
+  color: var(--obang-hanji);
+}
+
+.cell--current.cell--rest .cell-letter {
+  border-color: var(--obang-hanji);
+}

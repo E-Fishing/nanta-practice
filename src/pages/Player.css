@@ -35,3 +35,8 @@
   color: var(--fg-muted);
   font-weight: 600;
 }
+
+/* The transport bar is the last child and sticks to the bottom; the chart scrolls behind it. */
+.player > .transport {
+  margin-top: var(--space-4);
+}

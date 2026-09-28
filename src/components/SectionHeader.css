@@ -46,3 +46,14 @@
   font-size: var(--small-size);
   font-weight: 600;
 }
+
+/* The section under the playhead. */
+.section-header--active .section-header-name {
+  color: var(--playhead);
+}
+
+.section-header-badge--rep {
+  border-color: var(--playhead);
+  background: var(--playhead);
+  color: var(--obang-hanji);
+}

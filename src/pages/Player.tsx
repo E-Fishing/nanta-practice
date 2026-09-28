@@ -4,11 +4,13 @@ import Chart from '../components/Chart';
 import ErrorCard from '../components/ErrorCard';
 import MarkLegend from '../components/MarkLegend';
 import PartSelector from '../components/PartSelector';
+import Transport, { type TransportStatus } from '../components/Transport';
 import type { Piece } from '../engine/types';
 import { usePiece } from './usePiece';
+import { usePlayer } from './usePlayer';
 import './Player.css';
 
-/** Player page (SPEC §4.2). Milestone 2: the static chart of one part. Playback comes in M3. */
+/** Player page (SPEC §4.2): the chart of one part with follow-along playback. */
 export default function Player() {
   const { pieceId } = useParams();
   const state = usePiece(pieceId);
@@ -29,6 +31,15 @@ function LoadedPlayer({ piece }: { piece: Piece }) {
   const [partId, setPartId] = useState(piece.parts[0].id);
   const part = piece.parts.find((p) => p.id === partId) ?? piece.parts[0];
   const instrument = piece.instruments.find((i) => i.id === part.instrument);
+  const player = usePlayer(piece, part.id);
+  const { pulse, state } = player.snapshot;
+
+  const status: TransportStatus = {
+    sectionName: pulse === null ? null : piece.sections[pulse.sectionIndex].name,
+    rep: pulse?.rep ?? 1,
+    repeatCount: pulse?.repeatCount ?? 1,
+    bpm: player.snapshot.bpm,
+  };
 
   return (
     <>
@@ -41,7 +52,17 @@ function LoadedPlayer({ piece }: { piece: Piece }) {
       </header>
       <PartSelector parts={piece.parts} selectedId={part.id} onSelect={setPartId} />
       <MarkLegend />
-      <Chart piece={piece} part={part} />
+      <Chart piece={piece} part={part} pulse={pulse} autoScroll={state === 'playing'} />
+      <Transport
+        state={state}
+        audio={player.audio}
+        metronome={player.snapshot.metronome}
+        status={status}
+        onToggle={player.toggle}
+        onStop={player.stop}
+        onMetronome={player.setMetronome}
+        onEnableAudio={player.enableAudio}
+      />
     </>
   );
 }
