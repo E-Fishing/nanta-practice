@@ -1,0 +1,71 @@
+/* PartMixer: one row per part with M and S toggles. */
+.mixer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+}
+
+.mixer-part {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.mixer-name {
+  font-size: var(--text-size);
+  font-weight: 600;
+}
+
+.mixer-part--silent .mixer-name {
+  color: var(--fg-muted);
+  text-decoration: line-through;
+}
+
+.mixer-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--tap-min) - var(--space-3));
+  height: calc(var(--tap-min) - var(--space-3));
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: var(--text-size);
+  font-weight: var(--weight-heavy);
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast),
+    background-color var(--dur-fast),
+    color var(--dur-fast);
+}
+
+.mixer-button:hover {
+  border-color: var(--fg);
+}
+
+.mixer-button:focus-visible {
+  outline: 3px solid var(--playhead);
+  outline-offset: 2px;
+}
+
+/* Mute lights red (silence), solo lights yellow (the one part that plays). */
+.mixer-button--mute[aria-pressed='true'] {
+  border-color: var(--danger);
+  background: var(--danger);
+  color: var(--obang-hanji);
+}
+
+.mixer-button--solo[aria-pressed='true'] {
+  border-color: var(--reveal);
+  background: var(--reveal);
+  color: var(--obang-black);
+}
+
+@media (max-width: 600px) {
+  .mixer-button {
+    width: var(--tap-min);
+    height: var(--tap-min);
+  }
+}

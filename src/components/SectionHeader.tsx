@@ -5,6 +5,8 @@ export interface SectionHeaderProps {
   section: Section;
   /** 1-based repeat under the playhead when this section is playing, else null. */
   rep?: number | null;
+  /** The loop covers this section or some of its lines. */
+  looped?: boolean;
 }
 
 /** Crescendo hairpin: opens to the right, the way it is drawn on the chart. */
@@ -17,7 +19,7 @@ function Hairpin() {
 }
 
 /** Section name, repeat count ("rep 3 / 8" while playing), crescendo marker and tempo scale (SPEC §4.2). */
-export default function SectionHeader({ section, rep = null }: SectionHeaderProps) {
+export default function SectionHeader({ section, rep = null, looped = false }: SectionHeaderProps) {
   const active = rep !== null;
   return (
     <header className={active ? 'section-header section-header--active' : 'section-header'}>
@@ -42,6 +44,11 @@ export default function SectionHeader({ section, rep = null }: SectionHeaderProp
       {section.tempoScale !== 1 ? (
         <span className="section-header-badge" title={`Each pulse lasts ${1 / section.tempoScale}× as long`}>
           tempo ×{section.tempoScale}
+        </span>
+      ) : null}
+      {looped ? (
+        <span className="section-header-badge section-header-badge--loop" title="Inside the loop">
+          loop
         </span>
       ) : null}
       <span className="section-header-pulses">

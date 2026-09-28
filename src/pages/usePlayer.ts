@@ -1,9 +1,11 @@
 /**
  * React binding for the playback engine (SPEC §6: "React state + a usePlayer hook wrapping Tone").
  * Loads the piece's timeline into the shared player for the life of the component and exposes
- * the engine's snapshot through `useSyncExternalStore`, plus the audio-unlock state.
+ * the engine's snapshot through `useSyncExternalStore`, plus the audio-unlock state and every
+ * control of SPEC §4.2.
  */
-import { useCallback, useEffect, useMemo, useSyncExternalStore } from 'react';
+import { useEffect, useMemo, useSyncExternalStore } from 'react';
+import type { LoopSpec } from '../engine/controls';
 import { expandPiece } from '../engine/expand';
 import {
   audioState,
@@ -26,11 +28,21 @@ export interface PlayerControls {
   stop: () => void;
   toggle: () => void;
   setMetronome: (on: boolean) => void;
+  /** Pulses per minute; clamped to `snapshot.bpmRange`. */
+  setBpm: (bpm: number) => void;
+  /** Tempo by whole steps of `TEMPO_STEP_BPM` (`[` / `]`). */
+  stepBpm: (steps: number) => void;
+  setStepPerLoop: (on: boolean) => void;
+  setLoop: (spec: LoopSpec) => void;
+  setMuted: (partId: string, on: boolean) => void;
+  setSolo: (partId: string | null) => void;
+  /** ← / →: one chart line back or forward. */
+  jumpLine: (delta: number) => void;
 }
 
 /**
  * Drive playback of `piece`. `focusPartId` is the part on screen: its group starts get the
- * loud metronome click. Reloading happens only when `piece` changes.
+ * loud metronome click and line jumps follow its lines. Reloading happens only when `piece` changes.
  */
 export function usePlayer(piece: Piece, focusPartId: string): PlayerControls {
   const player = getPlayer();
@@ -50,11 +62,24 @@ export function usePlayer(piece: Piece, focusPartId: string): PlayerControls {
   const snapshot = useSyncExternalStore(player.subscribe, player.getSnapshot);
   const audio = useSyncExternalStore(subscribeAudioState, audioState);
 
-  const play = useCallback(() => player.play(), [player]);
-  const pause = useCallback(() => player.pause(), [player]);
-  const stop = useCallback(() => player.stop(), [player]);
-  const toggle = useCallback(() => player.toggle(), [player]);
-  const setMetronome = useCallback((on: boolean) => player.setMetronome(on), [player]);
+  const controls = useMemo(
+    () => ({
+      enableAudio,
+      play: () => player.play(),
+      pause: () => player.pause(),
+      stop: () => player.stop(),
+      toggle: () => player.toggle(),
+      setMetronome: (on: boolean) => player.setMetronome(on),
+      setBpm: (bpm: number) => player.setBpm(bpm),
+      stepBpm: (steps: number) => player.stepBpm(steps),
+      setStepPerLoop: (on: boolean) => player.setStepPerLoop(on),
+      setLoop: (spec: LoopSpec) => player.setLoop(spec),
+      setMuted: (partId: string, on: boolean) => player.setMuted(partId, on),
+      setSolo: (partId: string | null) => player.setSolo(partId),
+      jumpLine: (delta: number) => player.jumpLine(delta),
+    }),
+    [player],
+  );
 
-  return { snapshot, timeline, audio, enableAudio, play, pause, stop, toggle, setMetronome };
+  return { snapshot, timeline, audio, ...controls };
 }

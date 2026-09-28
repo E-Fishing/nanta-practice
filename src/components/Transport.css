@@ -112,13 +112,26 @@
   font-weight: var(--weight-heavy);
 }
 
+/* Phones: Play, an icon-only Stop and Metronome fit one row; the status takes the next. */
 @media (max-width: 600px) {
+  .transport-controls {
+    gap: var(--space-2);
+  }
+
   .transport-button-text {
     font-size: var(--small-size);
   }
 
   .transport-button--primary {
-    min-width: 120px;
+    min-width: 104px;
+  }
+
+  .transport-button--stop {
+    padding: var(--space-2);
+  }
+
+  .transport-button--stop .transport-button-text {
+    display: none;
   }
 
   .transport-status {
@@ -131,4 +144,17 @@
   .transport {
     box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.4);
   }
+}
+
+/* Second row: the tempo control. */
+.transport-row {
+  display: flex;
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--border);
+}
+
+.transport-status-loop {
+  color: var(--playhead);
+  font-weight: var(--weight-heavy);
 }

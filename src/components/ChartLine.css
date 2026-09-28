@@ -84,3 +84,9 @@
 .chart-line--current .chart-line-number {
   color: var(--playhead);
 }
+
+/* Lines inside the loop: a blue bar in the number gutter brackets the range. */
+.chart-line--looped .chart-line-number {
+  box-shadow: inset 3px 0 0 var(--playhead);
+  padding-left: var(--space-1);
+}

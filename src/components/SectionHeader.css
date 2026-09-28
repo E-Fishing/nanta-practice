@@ -57,3 +57,9 @@
   background: var(--playhead);
   color: var(--obang-hanji);
 }
+
+/* The section (or some of its lines) is looped. */
+.section-header-badge--loop {
+  border-color: var(--playhead);
+  color: var(--playhead);
+}

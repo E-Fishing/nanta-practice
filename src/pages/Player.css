@@ -40,3 +40,15 @@
 .player > .transport {
   margin-top: var(--space-4);
 }
+
+/* Loop picker and mute/solo, between the legend and the chart. */
+.player-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-8);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}

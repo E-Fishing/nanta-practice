@@ -1,0 +1,60 @@
+/* LoopControl: "Loop [section] lines [n] to [m]". */
+.loop-control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.loop-control-label {
+  font-size: var(--text-size);
+  font-weight: var(--weight-heavy);
+}
+
+.loop-control-sublabel {
+  color: var(--fg-muted);
+  font-size: var(--text-size);
+  font-weight: 600;
+}
+
+.loop-control-lines {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* 16px minimum so iOS Safari does not zoom the page when a select gets focus. */
+.loop-control-select {
+  min-height: calc(var(--tap-min) - var(--space-3));
+  padding: var(--space-1) var(--space-3);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: var(--text-size);
+  font-weight: var(--weight-heavy);
+  cursor: pointer;
+  transition: border-color var(--dur-fast);
+}
+
+.loop-control-select:hover {
+  border-color: var(--fg);
+}
+
+.loop-control-select:focus-visible {
+  outline: 3px solid var(--playhead);
+  outline-offset: 2px;
+}
+
+.loop-control-hint {
+  color: var(--fg-muted);
+  font-size: var(--small-size);
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .loop-control-select {
+    min-height: var(--tap-min);
+  }
+}

@@ -1,4 +1,6 @@
-import type { AudioState, PlaybackState } from '../engine/player';
+import type { ReactNode, Ref } from 'react';
+import type { AudioState, CountInStatus, PlaybackState } from '../engine/player';
+import CountIn from './CountIn';
 import SoundGate from './SoundGate';
 import './Transport.css';
 
@@ -8,18 +10,26 @@ export interface TransportStatus {
   /** 1-based repeat of that section; shown as "rep 3 / 8" when the section repeats. */
   rep: number;
   repeatCount: number;
-  bpm: number;
+  /** True when a loop is set; `loopCount` loops have wrapped since play. */
+  looping: boolean;
+  loopCount: number;
 }
 
 export interface TransportProps {
+  /** The bar's element, so the page can measure how much of the viewport it covers. */
+  ref?: Ref<HTMLDivElement>;
   state: PlaybackState;
   audio: AudioState;
   metronome: boolean;
   status: TransportStatus;
+  /** Shown in place of the status during the count-in. */
+  countIn?: { status: CountInStatus; sectionName: string } | null;
   onToggle: () => void;
   onStop: () => void;
   onMetronome: (on: boolean) => void;
   onEnableAudio: () => Promise<AudioState>;
+  /** A second row of controls (the tempo control). */
+  children?: ReactNode;
 }
 
 function PlayIcon() {
@@ -47,26 +57,34 @@ function StopIcon() {
   );
 }
 
-/** Play/pause, stop and metronome controls in a bar that sticks to the bottom of the screen (SPEC §4.2). */
-export default function Transport({ state, audio, metronome, status, onToggle, onStop, onMetronome, onEnableAudio }: TransportProps) {
+/** Play/pause, stop, metronome and status in a bar that sticks to the bottom of the screen (SPEC §4.2). */
+export default function Transport({
+  ref,
+  state,
+  audio,
+  metronome,
+  status,
+  countIn = null,
+  onToggle,
+  onStop,
+  onMetronome,
+  onEnableAudio,
+  children,
+}: TransportProps) {
   const playing = state === 'playing';
   const locked = audio === 'locked';
   const showRep = status.sectionName !== null && status.repeatCount > 1;
+  const playLabel = playing ? 'Pause' : state === 'paused' ? 'Resume' : 'Play';
 
   return (
-    <div className="transport" role="group" aria-label="Playback">
+    <div className="transport" role="group" aria-label="Playback" ref={ref}>
       {locked ? <SoundGate onEnable={onEnableAudio} /> : null}
       <div className="transport-controls" aria-hidden={locked} inert={locked}>
-        <button
-          type="button"
-          className="transport-button transport-button--primary"
-          onClick={onToggle}
-          aria-label={playing ? 'Pause' : state === 'paused' ? 'Resume' : 'Play'}
-        >
+        <button type="button" className="transport-button transport-button--primary" onClick={onToggle} aria-label={playLabel}>
           {playing ? <PauseIcon /> : <PlayIcon />}
-          <span className="transport-button-text">{playing ? 'Pause' : state === 'paused' ? 'Resume' : 'Play'}</span>
+          <span className="transport-button-text">{playLabel}</span>
         </button>
-        <button type="button" className="transport-button" onClick={onStop} disabled={state === 'stopped'} aria-label="Stop">
+        <button type="button" className="transport-button transport-button--stop" onClick={onStop} disabled={state === 'stopped'} aria-label="Stop">
           <StopIcon />
           <span className="transport-button-text">Stop</span>
         </button>
@@ -81,20 +99,27 @@ export default function Transport({ state, audio, metronome, status, onToggle, o
             {metronome ? 'on' : 'off'}
           </span>
         </button>
-        <p className="transport-status" aria-live="off">
-          {status.sectionName === null ? (
-            <span className="transport-status-section">{state === 'stopped' ? 'Ready' : '…'}</span>
-          ) : (
-            <span className="transport-status-section">{status.sectionName}</span>
-          )}
-          {showRep ? (
-            <span className="transport-status-rep">
-              rep {status.rep} / {status.repeatCount}
-            </span>
-          ) : null}
-          <span className="transport-status-bpm">{Math.round(status.bpm)} BPM</span>
-        </p>
+        {countIn !== null ? (
+          <CountIn countIn={countIn.status} sectionName={countIn.sectionName} />
+        ) : (
+          <p className="transport-status" aria-live="off">
+            <span className="transport-status-section">{status.sectionName ?? (state === 'stopped' ? 'Ready' : '…')}</span>
+            {showRep ? (
+              <span className="transport-status-rep">
+                rep {status.rep} / {status.repeatCount}
+              </span>
+            ) : null}
+            {status.looping ? (
+              <span className="transport-status-loop">{status.loopCount > 0 ? `loop ${status.loopCount + 1}` : 'looping'}</span>
+            ) : null}
+          </p>
+        )}
       </div>
+      {children !== undefined ? (
+        <div className="transport-row" aria-hidden={locked} inert={locked}>
+          {children}
+        </div>
+      ) : null}
     </div>
   );
 }

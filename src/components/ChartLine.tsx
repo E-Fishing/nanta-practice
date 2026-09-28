@@ -4,8 +4,11 @@ import Cell from './Cell';
 import { cellView, type CellView } from './cellView';
 import './ChartLine.css';
 
-/** Where the playhead is inside a line: on a cell, in the breath after it, or elsewhere. */
-export type LineCursor = { kind: 'cell'; groupIndex: number; cellIndex: number } | { kind: 'pause' } | null;
+/**
+ * Where the playhead is inside a line: on a cell (sounding, or `cued` = where playback will
+ * start), in the breath after the line, or elsewhere.
+ */
+export type LineCursor = { kind: 'cell'; groupIndex: number; cellIndex: number; cued: boolean } | { kind: 'pause' } | null;
 
 export interface ChartLineProps {
   line: Line;
@@ -17,6 +20,8 @@ export interface ChartLineProps {
   lineKey: string;
   /** Playhead position when it is on this line; null otherwise (the common case). */
   cursor?: LineCursor;
+  /** Inside the current loop. */
+  looped?: boolean;
 }
 
 /** Which of the cell slots this line actually uses, so unused rows collapse line-wide. */
@@ -54,13 +59,14 @@ function Breath({ pulses, current }: { pulses: number; current: boolean }) {
  *
  * Memoized: during playback only the row the playhead enters or leaves re-renders.
  */
-function ChartLine({ line, number, defaultSurface, lineKey, cursor = null }: ChartLineProps) {
+function ChartLine({ line, number, defaultSurface, lineKey, cursor = null, looped = false }: ChartLineProps) {
   const groups = line.groups.map((group) => group.map((cell) => cellView(cell, defaultSurface)));
   const breath = line.pauseAfter > 0;
   const className = [
     'chart-line',
     breath ? 'chart-line--breath' : '',
     cursor !== null ? 'chart-line--current' : '',
+    looped ? 'chart-line--looped' : '',
     slotClasses(groups),
   ]
     .filter(Boolean)
@@ -73,9 +79,10 @@ function ChartLine({ line, number, defaultSurface, lineKey, cursor = null }: Cha
       <div className="chart-line-groups">
         {groups.map((group, g) => (
           <span key={g} className="chart-group">
-            {group.map((view, c) => (
-              <Cell key={c} view={view} current={cursor?.kind === 'cell' && cursor.groupIndex === g && cursor.cellIndex === c} />
-            ))}
+            {group.map((view, c) => {
+              const on = cursor?.kind === 'cell' && cursor.groupIndex === g && cursor.cellIndex === c;
+              return <Cell key={c} view={view} current={on && !cursor.cued} cued={on && cursor.cued} />;
+            })}
             {breath && g === groups.length - 1 ? <Breath pulses={line.pauseAfter} current={cursor?.kind === 'pause'} /> : null}
           </span>
         ))}
@@ -88,7 +95,8 @@ function ChartLine({ line, number, defaultSurface, lineKey, cursor = null }: Cha
 function sameCursor(a: LineCursor, b: LineCursor): boolean {
   if (a === b) return true;
   if (a === null || b === null || a.kind !== b.kind) return false;
-  return a.kind === 'pause' || (b.kind === 'cell' && a.groupIndex === b.groupIndex && a.cellIndex === b.cellIndex);
+  if (a.kind === 'pause' || b.kind === 'pause') return true;
+  return a.groupIndex === b.groupIndex && a.cellIndex === b.cellIndex && a.cued === b.cued;
 }
 
 export default memo(ChartLine, (prev, next) => {
@@ -97,6 +105,7 @@ export default memo(ChartLine, (prev, next) => {
     prev.number === next.number &&
     prev.defaultSurface === next.defaultSurface &&
     prev.lineKey === next.lineKey &&
+    (prev.looped ?? false) === (next.looped ?? false) &&
     sameCursor(prev.cursor ?? null, next.cursor ?? null)
   );
 });

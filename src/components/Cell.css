@@ -128,3 +128,9 @@
 .cell--current.cell--rest .cell-letter {
   border-color: var(--obang-hanji);
 }
+
+/* Cued: where playback will start (a jumped-to line, or the first cell during the count-in). */
+.cell--cued {
+  color: var(--playhead);
+  box-shadow: 0 0 0 2px var(--playhead);
+}

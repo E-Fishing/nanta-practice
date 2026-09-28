@@ -1,0 +1,50 @@
+/* CountIn: a big beat number readable from across the room, with the cue text beside it. */
+.count-in {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0 0 0 auto;
+  color: var(--fg);
+}
+
+.count-in-label {
+  color: var(--fg-muted);
+  font-size: var(--small-size);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.count-in-beat {
+  min-width: 1.2em;
+  color: var(--playhead);
+  font-size: calc(var(--hand-size) + 12px);
+  font-weight: var(--weight-heavy);
+  line-height: 1;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.count-in-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.count-in-section {
+  font-size: var(--text-size);
+  font-weight: var(--weight-heavy);
+}
+
+/* The lead player's cue, in the accent red so it reads as an instruction. */
+.count-in-cue {
+  color: var(--danger);
+  font-size: var(--text-size);
+  font-weight: var(--weight-heavy);
+}
+
+@media (max-width: 600px) {
+  .count-in {
+    width: 100%;
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,162 @@
+/* TempoControl: label, −5, slider, +5, readout, per-loop toggle in one wrapping row. */
+.tempo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  width: 100%;
+}
+
+.tempo-label {
+  font-size: var(--text-size);
+  font-weight: var(--weight-heavy);
+}
+
+.tempo-step,
+.tempo-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-width: var(--tap-min);
+  min-height: calc(var(--tap-min) - var(--space-3));
+  padding: var(--space-1) var(--space-3);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: var(--text-size);
+  font-weight: var(--weight-heavy);
+  cursor: pointer;
+  transition: border-color var(--dur-fast);
+}
+
+.tempo-step:hover:not(:disabled),
+.tempo-toggle:hover {
+  border-color: var(--fg);
+}
+
+.tempo-step:focus-visible,
+.tempo-toggle:focus-visible,
+.tempo-slider:focus-visible {
+  outline: 3px solid var(--playhead);
+  outline-offset: 2px;
+}
+
+.tempo-step:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.tempo-toggle[aria-pressed='true'] {
+  border-color: var(--fg);
+}
+
+.tempo-toggle-state {
+  padding: 0 var(--space-2);
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  font-size: var(--small-size);
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.tempo-toggle[aria-pressed='true'] .tempo-toggle-state {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+/* The slider: a thick track and a big thumb, easy to grab on a phone. */
+.tempo-slider {
+  flex: 1 1 160px;
+  min-width: 120px;
+  max-width: 420px;
+  height: var(--tap-min);
+  margin: 0;
+  background: transparent;
+  accent-color: var(--playhead);
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.tempo-slider::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--border);
+}
+
+.tempo-slider::-moz-range-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--border);
+}
+
+.tempo-slider::-webkit-slider-thumb {
+  width: 28px;
+  height: 28px;
+  margin-top: -10px;
+  border: 3px solid var(--surface);
+  border-radius: 50%;
+  background: var(--playhead);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.tempo-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border: 3px solid var(--surface);
+  border-radius: 50%;
+  background: var(--playhead);
+}
+
+.tempo-readout {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  min-width: 7.5em;
+  font-weight: var(--weight-heavy);
+  font-variant-numeric: tabular-nums;
+}
+
+.tempo-readout-percent {
+  color: var(--fg-muted);
+  font-size: var(--small-size);
+  font-weight: 600;
+}
+
+/* Phones: "−5 [slider] +5 325 BPM" on one row, the per-loop toggle on its own. */
+@media (max-width: 600px) {
+  .tempo {
+    gap: var(--space-2);
+  }
+
+  .tempo-label {
+    display: none;
+  }
+
+  .tempo-slider {
+    flex: 1 1 80px;
+    min-width: 80px;
+    max-width: none;
+  }
+
+  .tempo-readout {
+    min-width: 0;
+  }
+
+  .tempo-readout-percent {
+    display: none;
+  }
+
+  .tempo-step {
+    min-height: var(--tap-min);
+  }
+
+  .tempo-toggle {
+    flex-basis: 100%;
+    min-height: 48px;
+  }
+}
