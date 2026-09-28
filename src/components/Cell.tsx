@@ -99,6 +99,7 @@ export default function Cell({ view, current = false, cued = false, state }: Cel
     current ? 'cell--current' : '',
     cued ? 'cell--cued' : '',
     hidden ? 'cell--hidden' : '',
+    state?.wrong ? 'cell--wrong' : '',
     heatInfo?.className ?? '',
   ]
     .filter(Boolean)

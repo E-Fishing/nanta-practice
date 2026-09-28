@@ -88,3 +88,57 @@
     color: var(--obang-yellow);
   }
 }
+
+/* Cue drill: one line per section entry. */
+.drill-stats-transitions {
+  flex-basis: 100%;
+  margin: 0;
+  padding-left: 1.4em;
+  font-size: var(--small-size);
+  font-weight: 600;
+  columns: 2;
+  column-gap: var(--space-4);
+}
+
+.drill-stats-transition--on-time {
+  color: var(--fg);
+}
+
+.drill-stats-transition--early {
+  color: var(--playhead);
+}
+
+.drill-stats-transition--late {
+  color: #a37b12;
+}
+
+.drill-stats-transition--miss,
+.drill-stats-transition--wrong-hand {
+  color: var(--danger);
+}
+
+.drill-stats-transition--pending {
+  color: var(--fg-muted);
+}
+
+/* Blind run: the three worst lines after the pass. */
+.drill-stats-worst {
+  flex-basis: 100%;
+}
+
+.drill-stats-worst-title {
+  margin: 0 0 var(--space-1);
+  font-weight: var(--weight-heavy);
+}
+
+.drill-stats-worst-list {
+  margin: 0;
+  padding-left: 1.4em;
+  font-weight: 600;
+}
+
+@media (prefers-color-scheme: dark) {
+  .drill-stats-transition--late {
+    color: var(--obang-yellow);
+  }
+}

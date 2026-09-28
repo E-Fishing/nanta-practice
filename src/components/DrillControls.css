@@ -79,3 +79,8 @@
   font-size: var(--small-size);
   font-weight: 600;
 }
+
+.drill-controls-button--stage {
+  border-color: var(--playhead);
+  color: var(--playhead);
+}

@@ -1,0 +1,49 @@
+/* AccuracyChart: a small inline SVG line chart, 0 to 100% with the 85% pass line. */
+.accuracy-chart {
+  margin: 0;
+  max-width: 320px;
+}
+
+.accuracy-chart-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--cell-radius);
+  background: var(--cell-bg);
+}
+
+.accuracy-chart-axis {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.accuracy-chart-pass {
+  stroke: var(--reveal);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}
+
+.accuracy-chart-line {
+  fill: none;
+  stroke: var(--playhead);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.accuracy-chart-dot {
+  fill: var(--surface);
+  stroke: var(--playhead);
+  stroke-width: 2;
+}
+
+.accuracy-chart-dot--pass {
+  fill: var(--playhead);
+}
+
+.accuracy-chart-caption,
+.accuracy-chart-empty {
+  margin: var(--space-1) 0 0;
+  color: var(--fg-muted);
+  font-size: var(--small-size);
+}

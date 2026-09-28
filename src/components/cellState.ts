@@ -15,6 +15,8 @@ export interface CellState {
   hideHand?: boolean;
   /** Syllable hidden (Gu-eum only, stage 2). */
   hideGueum?: boolean;
+  /** Fill the gap: answered wrong or not at all (red outline). */
+  wrong?: boolean;
   heat?: CellHeat | null;
 }
 

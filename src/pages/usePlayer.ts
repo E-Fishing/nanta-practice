@@ -16,6 +16,7 @@ import {
   type LoopListener,
   type PlayerSnapshot,
   type PulseListener,
+  type SoundFilter,
 } from '../engine/player';
 import type { Piece, Timeline } from '../engine/types';
 
@@ -45,6 +46,9 @@ export interface PlayerControls {
   subscribeLoops: (listener: LoopListener) => () => void;
   /** The audio clock now; stamp taps with it. */
   now: () => number;
+  /** Drill hooks: silence strokes the filter rejects; play the loop once. */
+  setSoundFilter: (filter: SoundFilter | null) => void;
+  setStopAtLoopEnd: (on: boolean) => void;
 }
 
 /**
@@ -87,6 +91,8 @@ export function usePlayer(piece: Piece, focusPartId: string): PlayerControls {
       subscribePulses: player.subscribePulses,
       subscribeLoops: player.subscribeLoops,
       now: () => player.now(),
+      setSoundFilter: (filter: SoundFilter | null) => player.setSoundFilter(filter),
+      setStopAtLoopEnd: (on: boolean) => player.setStopAtLoopEnd(on),
     }),
     [player],
   );

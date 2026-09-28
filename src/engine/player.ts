@@ -108,6 +108,8 @@ export interface PulseEvent {
 export type PulseListener = (event: PulseEvent) => void;
 /** The Transport wrapped to the loop start at audio time `time`; `loopCount` loops are now complete. */
 export type LoopListener = (loopCount: number, time: number) => void;
+/** Whether `partId`'s strokes at `pulse` should sound (the Cue drill silences all but the cues). */
+export type SoundFilter = (pulse: TimelinePulse, partId: string) => boolean;
 
 /** Seconds a tempo change ramps over, so it never restarts or jolts playback (SPEC §6). */
 export const TEMPO_RAMP_SECONDS = 0.1;
@@ -214,6 +216,10 @@ export class Player {
   private partIds: string[] = [];
   /** Parts that sound: everything not muted, or the soloed part. */
   private audible: string[] = [];
+  /** Drill filter: when set, a part's strokes at a pulse sound only if it returns true. */
+  private soundFilter: SoundFilter | null = null;
+  /** Drill option: stop at the loop end instead of wrapping (a single pass of the loop). */
+  private stopAtLoopEnd = false;
   /** Part whose group starts get the loud metronome click and whose lines ← / → jump between. */
   private focusPartId = '';
   private eventIds: number[] = [];
@@ -345,6 +351,8 @@ export class Player {
     this.timeline = null;
     this.partIds = [];
     this.audible = [];
+    this.soundFilter = null;
+    this.stopAtLoopEnd = false;
     this.range = null;
     this.position = 0;
     if (this.snapshot.loaded) this.set(UNLOADED);
@@ -378,6 +386,9 @@ export class Player {
       // Earlier material under the count-in stays silent; the start pulse ends the count-in.
       if (pulse.index < this.countIn.startIndex) return;
       this.countIn = null;
+      // Cleared here, from the audio clock, not only in the Draw callback below: drills gate
+      // taps on it, and animation frames stall in a hidden tab.
+      if (this.snapshot.countIn !== null) this.set({ countIn: null });
     }
     // Tone's clock can hand the tick at a window boundary to both windows; play each pulse once.
     if (this.lastFired !== null && this.lastFired.index === pulse.index && Math.abs(time - this.lastFired.time) < 0.001) return;
@@ -395,8 +406,10 @@ export class Player {
 
   private sound(pulse: TimelinePulse, time: number): void {
     const bank = this.bank();
+    const filter = this.soundFilter;
+    const parts = filter === null ? this.audible : this.audible.filter((partId) => filter(pulse, partId));
     try {
-      for (const stroke of strokesAt(pulse, this.audible)) {
+      for (const stroke of strokesAt(pulse, parts)) {
         // A flam pickup sits before the pulse; never earlier than the context can still play.
         const at = stroke.offsetSeconds < 0 ? Math.max(time + stroke.offsetSeconds, Tone.immediate()) : time + stroke.offsetSeconds;
         bank.voice(stroke.sound).trigger(at, stroke.hand, stroke.gainDb);
@@ -452,6 +465,14 @@ export class Player {
   /** The Transport wrapped to the loop start at audio time `time`. */
   private readonly onTransportLoop = (time: number): void => {
     if (this.timeline === null || this.snapshot.state !== 'playing') return;
+    if (this.stopAtLoopEnd) {
+      // One pass only: treat the wrap like the end of the piece (see onEnd).
+      const loopCount = this.snapshot.loopCount + 1;
+      this.set({ loopCount });
+      for (const listener of this.loopListeners) listener(loopCount, time);
+      this.onEnd(time, this.generation);
+      return;
+    }
     let bpm = this.snapshot.bpm;
     if (this.snapshot.stepPerLoop) {
       const next = clampBpm(bpm + TEMPO_STEP_BPM, this.snapshot.bpmRange);
@@ -671,6 +692,16 @@ export class Player {
   setSolo(partId: string | null): void {
     this.audible = audibleParts(this.partIds, this.snapshot.muted, partId);
     this.set({ solo: partId });
+  }
+
+  /** Silence strokes the filter rejects (null = everything sounds). The metronome is unaffected. */
+  setSoundFilter(filter: SoundFilter | null): void {
+    this.soundFilter = filter;
+  }
+
+  /** Play the loop once: stop where it would wrap. Off = loop forever. */
+  setStopAtLoopEnd(on: boolean): void {
+    this.stopAtLoopEnd = on;
   }
 
   /**

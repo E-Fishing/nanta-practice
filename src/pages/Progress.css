@@ -1,0 +1,192 @@
+/* Progress page: member picker and export/import, then one card per piece. */
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.progress-nav {
+  font-weight: 600;
+}
+
+.progress-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.progress-title {
+  margin: 0;
+  font-size: var(--hand-size);
+  font-weight: var(--weight-heavy);
+  line-height: 1.15;
+}
+
+.progress-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.progress-member {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.progress-member-label {
+  font-weight: var(--weight-heavy);
+}
+
+.progress-select,
+.progress-button {
+  min-height: calc(var(--tap-min) - var(--space-3));
+  padding: var(--space-1) var(--space-3);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: var(--text-size);
+  font-weight: var(--weight-heavy);
+  cursor: pointer;
+  transition: border-color var(--dur-fast);
+}
+
+.progress-select:hover,
+.progress-button:hover:not(:disabled) {
+  border-color: var(--fg);
+}
+
+.progress-select:focus-visible,
+.progress-button:focus-visible {
+  outline: 3px solid var(--playhead);
+  outline-offset: 2px;
+}
+
+.progress-button:disabled,
+.progress-select:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.progress-file {
+  display: none;
+}
+
+.progress-notice {
+  margin: 0;
+  font-weight: 600;
+}
+
+.progress-notice--error {
+  color: var(--danger);
+}
+
+.progress-empty {
+  margin: 0;
+  color: var(--fg-muted);
+  font-weight: 600;
+}
+
+.progress-piece {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.progress-piece-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-3);
+  font-size: 20px;
+  font-weight: var(--weight-heavy);
+}
+
+.progress-piece-links {
+  display: inline-flex;
+  gap: var(--space-3);
+  font-size: var(--text-size);
+  font-weight: 600;
+}
+
+.progress-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-size);
+}
+
+.progress-table th,
+.progress-table td {
+  padding: var(--space-2) var(--space-3);
+  border-top: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.progress-table thead th {
+  border-top: 0;
+  color: var(--fg-muted);
+  font-size: var(--small-size);
+  font-weight: 600;
+}
+
+.progress-table tbody th {
+  font-weight: var(--weight-heavy);
+}
+
+.progress-mode {
+  color: var(--fg-muted);
+  font-size: var(--small-size);
+  font-weight: 600;
+}
+
+/* Phones: each row becomes a stacked card. */
+@media (max-width: 700px) {
+  .progress-table thead {
+    display: none;
+  }
+
+  .progress-table,
+  .progress-table tbody,
+  .progress-table tr,
+  .progress-table th,
+  .progress-table td {
+    display: block;
+  }
+
+  .progress-table tr {
+    padding: var(--space-2) 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .progress-table th,
+  .progress-table td {
+    padding: 2px 0;
+    border-top: 0;
+  }
+
+  .progress-table td:nth-child(2)::before {
+    content: 'Best BPM: ';
+    color: var(--fg-muted);
+  }
+
+  .progress-table td:nth-child(3)::before {
+    content: 'Last accuracy: ';
+    color: var(--fg-muted);
+  }
+
+  .progress-table td:nth-child(4)::before {
+    content: 'Attempts: ';
+    color: var(--fg-muted);
+  }
+
+  .progress-table td:nth-child(5)::before {
+    content: 'Last practiced: ';
+    color: var(--fg-muted);
+  }
+}
