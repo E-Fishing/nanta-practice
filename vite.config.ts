@@ -9,8 +9,10 @@ const port = process.env.PORT ? Number(process.env.PORT) : 5173
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // Relative base so the built site works from any path (GitHub Pages) with the hash router.
-  base: './',
+  // GitHub Pages serves the site from https://<user>.github.io/nanta-practice/. Assets and the
+  // pieces JSON (fetched from import.meta.env.BASE_URL) load from that subpath; the hash router
+  // keeps every route on the same page. The dev server uses it too: / redirects to /nanta-practice/.
+  base: '/nanta-practice/',
   server: {
     // 127.0.0.1 rather than localhost: on this machine localhost has resolved inconsistently.
     host: '127.0.0.1',
