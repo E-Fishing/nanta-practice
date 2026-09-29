@@ -1,20 +1,30 @@
-/* PieceCard: one Library card per piece. */
+/* PieceCard: one Library card per piece: a paper panel under a hwi lintel (Band M). */
 .piece-card {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
   height: 100%;
-  padding: var(--space-4);
+  padding: 0 var(--space-4) var(--space-4);
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: var(--frame-width) solid var(--frame);
+  border-radius: var(--radius-panel);
+}
+
+/* The lintel: Band M across the top edge of the card. */
+.piece-card::before {
+  content: '';
+  flex: none;
+  height: var(--band-m);
+  margin: 0 calc(-1 * var(--space-4)) var(--space-1);
+  background: var(--orn-band-m);
 }
 
 .piece-card-title {
   margin: 0;
-  font-size: var(--hand-size);
-  font-weight: var(--weight-heavy);
-  line-height: 1.15;
+  font-family: var(--font-display);
+  font-size: var(--card-title-size);
+  font-weight: 700;
+  line-height: 1.2;
   overflow-wrap: anywhere;
 }
 
@@ -73,14 +83,14 @@
 }
 
 .piece-card-button:focus-visible {
-  outline: 3px solid var(--playhead);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 
 .piece-card-button--primary {
-  background: var(--playhead);
-  border-color: var(--playhead);
-  color: var(--obang-hanji);
+  background: var(--action);
+  border-color: var(--action-edge);
+  color: var(--on-action);
 }
 
 .piece-card-button--primary:hover {

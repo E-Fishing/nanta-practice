@@ -37,13 +37,16 @@ export default function LineEditor({ line, sectionIndex, partId, lineIndex, line
       </span>
       <div className="line-editor-groups">
         {line.groups.map((group, groupIndex) => (
-          <span key={groupIndex} className="line-editor-group">
-            {group.map((token, cellIndex) => {
-              const loc: CellLoc = { sectionIndex, partId, lineIndex, groupIndex, cellIndex };
-              return (
-                <EditCell key={cellIndex} token={token} instrument={instrument} loc={loc} active={sameLoc(menuLoc, loc)} onCycle={onCycle} onOpenMenu={onOpenMenu} />
-              );
-            })}
+          // The group never breaks; its "+" wraps below it when a phone row has no room left.
+          <span key={groupIndex} className="line-editor-cluster">
+            <span className="line-editor-group">
+              {group.map((token, cellIndex) => {
+                const loc: CellLoc = { sectionIndex, partId, lineIndex, groupIndex, cellIndex };
+                return (
+                  <EditCell key={cellIndex} token={token} instrument={instrument} loc={loc} active={sameLoc(menuLoc, loc)} onCycle={onCycle} onOpenMenu={onOpenMenu} />
+                );
+              })}
+            </span>
             <button
               type="button"
               className="line-editor-add-cell"

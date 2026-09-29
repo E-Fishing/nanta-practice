@@ -7,7 +7,7 @@
   padding: var(--space-4);
   background: var(--surface);
   border: 2px solid var(--danger);
-  border-radius: var(--radius);
+  border-radius: var(--radius-panel);
 }
 
 .error-card-title {

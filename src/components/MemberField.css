@@ -37,7 +37,7 @@
 }
 
 .member-field-input:focus-visible {
-  outline: 3px solid var(--playhead);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
-  border-color: var(--playhead);
+  border-color: var(--focus);
 }

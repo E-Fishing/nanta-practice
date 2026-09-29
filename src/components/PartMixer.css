@@ -46,7 +46,7 @@
 }
 
 .mixer-button:focus-visible {
-  outline: 3px solid var(--playhead);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -54,13 +54,13 @@
 .mixer-button--mute[aria-pressed='true'] {
   border-color: var(--danger);
   background: var(--danger);
-  color: var(--obang-hanji);
+  color: var(--on-danger);
 }
 
 .mixer-button--solo[aria-pressed='true'] {
   border-color: var(--reveal);
   background: var(--reveal);
-  color: var(--obang-black);
+  color: var(--on-reveal);
 }
 
 @media (max-width: 600px) {

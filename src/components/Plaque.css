@@ -1,0 +1,87 @@
+/* Plaque: deep-blue board, vermilion frame, gold line inside, ink line outside. Square corners. */
+.plaque {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  flex: none;
+  gap: 2px;
+  max-width: 100%;
+  margin: 0;
+  padding: 10px 18px 11px;
+  border: 5px solid var(--vermilion-600);
+  outline: 1px solid var(--ink-900);
+  box-shadow: inset 0 0 0 1px var(--gold-400);
+  background: var(--plaque);
+  color: var(--on-plaque);
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.plaque-ko {
+  font-family: var(--font-display);
+  font-size: var(--title-compact-size);
+  font-weight: var(--weight-display);
+  letter-spacing: 0.04em;
+  overflow-wrap: anywhere;
+}
+
+.plaque-en {
+  color: var(--gloss-on-color);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+/* Hanging: the page title of Library and Progress, hung from a Band L. */
+.plaque--hanging {
+  padding: 14px 32px 16px;
+}
+
+.plaque--hanging .plaque-ko {
+  font-size: var(--title-size);
+}
+
+.plaque--hanging .plaque-en {
+  font-size: 16px;
+}
+
+/* Lines only (Editor): no board, just Korean over English; the painted lines are on the toolbar
+   and the section heads, so the title adds no band of its own (one band per edge). */
+.plaque--lines {
+  align-items: flex-start;
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+  background: transparent;
+  color: var(--fg);
+  text-align: left;
+}
+
+.plaque--lines .plaque-en {
+  color: var(--gloss);
+}
+
+@media (max-width: 600px) {
+  .plaque {
+    border-width: 4px;
+    padding: 8px 14px 9px;
+  }
+
+  .plaque--hanging {
+    padding: 12px 20px 13px;
+  }
+
+  .plaque--hanging .plaque-en {
+    font-size: 14px;
+  }
+
+  .plaque--lines {
+    padding: 0;
+    border: 0;
+  }
+}

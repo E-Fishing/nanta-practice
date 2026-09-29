@@ -10,7 +10,7 @@
   overflow-y: auto;
   padding: var(--space-3);
   border: 2px solid var(--fg);
-  border-radius: var(--radius);
+  border-radius: var(--radius-panel);
   background: var(--surface);
   color: var(--fg);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
@@ -63,13 +63,13 @@
 }
 
 .cell-menu-choice[aria-pressed='true'] {
-  border-color: var(--playhead);
-  background: var(--playhead);
-  color: var(--obang-hanji);
+  border-color: var(--action-edge);
+  background: var(--action);
+  color: var(--on-action);
 }
 
 .cell-menu-choice:focus-visible {
-  outline: 3px solid var(--playhead);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -85,7 +85,7 @@
 .cell-menu-check input {
   width: 20px;
   height: 20px;
-  accent-color: var(--playhead);
+  accent-color: var(--action);
 }
 
 .cell-menu-gueum {
@@ -111,4 +111,16 @@
 
 .cell-menu-close {
   margin-left: auto;
+}
+
+/* Phones: every choice is a full 56 px tap target (SPEC §5). */
+@media (max-width: 600px) {
+  .cell-menu-choice,
+  .cell-menu-check {
+    min-height: var(--tap-min);
+  }
+
+  .cell-menu-choice {
+    min-width: var(--tap-min);
+  }
 }

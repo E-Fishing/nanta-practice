@@ -1,25 +1,32 @@
-/* Player page: nav, title, part selector, legend, then the chart. */
+/* Player page: nav, plaque and piece title, part selector, legend, controls, then the chart. */
 .player {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
 }
 
-.player-nav {
-  font-weight: 600;
-}
-
+/* The page's plaque (연습 / Player) beside the piece title and its figures. */
 .player-header {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+}
+
+.player-heading {
+  display: flex;
+  flex: 1 1 260px;
   flex-direction: column;
   gap: var(--space-1);
+  min-width: 0;
 }
 
 .player-title {
   margin: 0;
-  font-size: var(--hand-size);
-  font-weight: var(--weight-heavy);
-  line-height: 1.15;
+  font-family: var(--font-display);
+  font-size: var(--title-compact-size);
+  font-weight: var(--weight-display);
+  line-height: 1.2;
   overflow-wrap: anywhere;
 }
 
@@ -41,14 +48,14 @@
   margin-top: var(--space-4);
 }
 
-/* Loop picker and mute/solo, between the legend and the chart. */
+/* Loop picker and mute/solo, between the legend and the chart: a plain paper panel. */
 .player-controls {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-3) var(--space-8);
   padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: var(--frame-width) solid var(--frame);
+  border-radius: var(--radius-panel);
   background: var(--surface);
 }

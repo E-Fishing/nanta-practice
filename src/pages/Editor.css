@@ -1,15 +1,9 @@
-/* Editor page (SPEC §4.4): nav, sticky toolbar, piece fields, setup, then the sections. */
+/* Editor page (SPEC §4.4; DESIGN.md §5.6): nav, sticky toolbar, title, piece fields, setup, then the sections. */
 .editor {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-}
-
-.editor-nav {
-  display: flex;
-  gap: var(--space-4);
-  font-weight: 600;
 }
 
 .editor-header {
@@ -19,10 +13,11 @@
 }
 
 .editor-title {
-  margin: 0;
-  font-size: var(--hand-size);
-  font-weight: var(--weight-heavy);
-  line-height: 1.15;
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-display);
+  font-size: var(--title-compact-size);
+  font-weight: var(--weight-display);
+  line-height: 1.2;
   overflow-wrap: anywhere;
 }
 
@@ -35,14 +30,23 @@
 }
 
 .editor-setup {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: var(--frame-width) solid var(--frame);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
 }
 
 .editor-setup-summary {
-  padding: var(--space-3) var(--space-4);
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
   font-weight: var(--weight-heavy);
   cursor: pointer;
+}
+
+.editor-setup-summary:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
 }
 
 .editor-setup-body {
@@ -71,7 +75,7 @@
   align-items: center;
   justify-content: center;
   border: 4px dashed var(--playhead);
-  background: rgba(42, 92, 170, 0.12);
+  background: var(--playhead-wash);
   color: var(--playhead);
   font-size: 24px;
   font-weight: var(--weight-heavy);
@@ -107,7 +111,7 @@
 
 .editor-input:focus-visible,
 .editor-select:focus-visible {
-  outline: 3px solid var(--playhead);
+  outline: 3px solid var(--focus);
   outline-offset: 1px;
 }
 
@@ -142,6 +146,7 @@
   font-family: var(--font);
   font-size: var(--text-size);
   font-weight: var(--weight-heavy);
+  text-decoration: none;
   cursor: pointer;
   transition:
     border-color var(--dur-fast),
@@ -153,7 +158,7 @@
 }
 
 .editor-button:focus-visible {
-  outline: 3px solid var(--playhead);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -162,10 +167,11 @@
   cursor: default;
 }
 
+/* Save is your action: jade (DESIGN.md §2.3). */
 .editor-button--primary {
-  border-color: var(--playhead);
-  background: var(--playhead);
-  color: var(--obang-hanji);
+  border-color: var(--action-edge);
+  background: var(--action);
+  color: var(--on-action);
 }
 
 .editor-button--small {
@@ -186,10 +192,20 @@
   color: var(--danger);
 }
 
+/* Phones: every editor control is a 56 px tap target (SPEC §5). Only the grid's cells are exempt
+   from the width (DESIGN.md §9): see EditCell.css. */
 @media (max-width: 600px) {
   .editor-input,
   .editor-select,
-  .editor-button {
-    min-height: 44px;
+  .editor-button,
+  .editor-button--small,
+  .editor-setup-summary {
+    min-height: var(--tap-min);
+  }
+
+  .editor-button,
+  .editor-button--icon {
+    min-width: var(--tap-min);
+    min-height: var(--tap-min);
   }
 }

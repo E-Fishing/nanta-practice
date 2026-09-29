@@ -1,7 +1,11 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AccuracyChart from '../components/AccuracyChart';
+import BeamTitle from '../components/BeamTitle';
 import { drillModeInfo } from '../components/drillModes';
+import PageNav from '../components/PageNav';
+import { PAGE_NAMES } from '../components/pageNames';
+import Rosette from '../components/Rosette';
 import type { DrillMode } from '../engine/drills';
 import type { Piece } from '../engine/types';
 import {
@@ -24,7 +28,10 @@ function percent(value: number): string {
   return `${Math.round(value * 100)}%`;
 }
 
-/** Progress page (SPEC §4.5): per member, per piece, per section figures, a chart each, export/import. */
+/**
+ * Progress page (SPEC §4.5; DESIGN.md §5.5, medium ornament): per member, per piece, per section
+ * figures, a chart each, export/import. Tables and charts stay plain paper.
+ */
 export default function Progress() {
   const [store, setStore] = useState<ProgressStore>(readProgress);
   const members = useMemo(() => listMembers(store), [store]);
@@ -66,12 +73,10 @@ export default function Progress() {
   const memberProgress = shown === '' ? undefined : store.members[shown];
 
   return (
-    <section className="progress">
-      <nav className="progress-nav">
-        <Link to="/">← Library</Link>
-      </nav>
+    <section className="progress page">
+      <PageNav items={[{ to: '/', back: true, ...PAGE_NAMES.library }]} />
+      <BeamTitle {...PAGE_NAMES.progress} />
       <header className="progress-header">
-        <h1 className="progress-title">Progress</h1>
         <div className="progress-tools">
           <label className="progress-member">
             <span className="progress-member-label">Member</span>
@@ -99,9 +104,15 @@ export default function Progress() {
         ) : null}
       </header>
       {members.length === 0 ? (
-        <p className="progress-empty">No progress yet. Type a name on the Library page, run a drill, and come back.</p>
+        <div className="progress-empty">
+          <Rosette size={48} />
+          <p className="progress-empty-text">No progress yet. Type a name on the Library page, run a drill, and come back.</p>
+        </div>
       ) : memberProgress === undefined ? (
-        <p className="progress-empty">No progress for {shown}.</p>
+        <div className="progress-empty">
+          <Rosette size={48} />
+          <p className="progress-empty-text">No progress for {shown}.</p>
+        </div>
       ) : (
         Object.entries(memberProgress).map(([pieceId, sections]) => (
           <PieceProgressCard key={pieceId} pieceId={pieceId} piece={pieces.get(pieceId)} sections={sections} />
@@ -128,8 +139,12 @@ function PieceProgressCard({ pieceId, piece, sections }: { pieceId: string; piec
         {piece?.title ?? pieceId}
         {piece ? (
           <span className="progress-piece-links">
-            <Link to={`/play/${pieceId}`}>Practice</Link>
-            <Link to={`/drill/${pieceId}`}>Drills</Link>
+            <Link className="progress-piece-link" to={`/play/${pieceId}`}>
+              Practice
+            </Link>
+            <Link className="progress-piece-link" to={`/drill/${pieceId}`}>
+              Drills
+            </Link>
           </span>
         ) : null}
       </h2>

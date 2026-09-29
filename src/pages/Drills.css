@@ -1,27 +1,32 @@
-/* Drills page: nav, title, part selector, setup, stats, the chart, then the sticky pad. */
+/* Drills page: nav, plaque and piece title, part selector, setup, stats, the chart, then the sticky pad. */
 .drills {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
 }
 
-.drills-nav {
-  display: flex;
-  gap: var(--space-4);
-  font-weight: 600;
-}
-
+/* The page's plaque (암기 훈련 / Drills) beside the piece title. */
 .drills-header {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+}
+
+.drills-heading {
+  display: flex;
+  flex: 1 1 260px;
   flex-direction: column;
   gap: var(--space-1);
+  min-width: 0;
 }
 
 .drills-title {
   margin: 0;
-  font-size: var(--hand-size);
-  font-weight: var(--weight-heavy);
-  line-height: 1.15;
+  font-family: var(--font-display);
+  font-size: var(--title-compact-size);
+  font-weight: var(--weight-display);
+  line-height: 1.2;
   overflow-wrap: anywhere;
 }
 

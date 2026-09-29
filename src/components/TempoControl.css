@@ -40,7 +40,7 @@
 .tempo-step:focus-visible,
 .tempo-toggle:focus-visible,
 .tempo-slider:focus-visible {
-  outline: 3px solid var(--playhead);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -67,7 +67,7 @@
   color: var(--bg);
 }
 
-/* The slider: a thick track and a big thumb, easy to grab on a phone. */
+/* The slider: a thick track and a big jade thumb (a control, not the music), easy to grab on a phone. */
 .tempo-slider {
   flex: 1 1 160px;
   min-width: 120px;
@@ -75,7 +75,7 @@
   height: var(--tap-min);
   margin: 0;
   background: transparent;
-  accent-color: var(--playhead);
+  accent-color: var(--action);
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
@@ -99,7 +99,7 @@
   margin-top: -10px;
   border: 3px solid var(--surface);
   border-radius: 50%;
-  background: var(--playhead);
+  background: var(--action);
   -webkit-appearance: none;
   appearance: none;
 }
@@ -109,7 +109,7 @@
   height: 22px;
   border: 3px solid var(--surface);
   border-radius: 50%;
-  background: var(--playhead);
+  background: var(--action);
 }
 
 .tempo-readout {
@@ -157,6 +157,6 @@
 
   .tempo-toggle {
     flex-basis: 100%;
-    min-height: 48px;
+    min-height: var(--tap-min);
   }
 }

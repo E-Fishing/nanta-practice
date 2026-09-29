@@ -19,7 +19,7 @@
 }
 
 .edit-cell:focus-visible {
-  outline: 3px solid var(--playhead);
+  outline: 3px solid var(--focus);
   outline-offset: 1px;
 }
 
@@ -43,4 +43,18 @@
   font-family: ui-monospace, monospace;
   font-size: var(--small-size);
   font-weight: var(--weight-heavy);
+}
+
+/*
+ * Phones: a cell is 56 px tall like every other tap target, but keeps the chart cell width so a
+ * 10-cell group still fits at 390 px (the one approved exception, DESIGN.md §9).
+ */
+@media (max-width: 600px) {
+  .edit-cell {
+    min-height: var(--tap-min);
+  }
+
+  .edit-cell > .cell {
+    justify-content: center;
+  }
 }

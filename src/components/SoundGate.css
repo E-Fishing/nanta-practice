@@ -21,10 +21,10 @@
   max-width: 420px;
   min-height: var(--tap-min);
   padding: var(--space-2) var(--space-4);
-  border: 2px solid var(--playhead);
+  border: 2px solid var(--action-edge);
   border-radius: var(--radius);
-  background: var(--playhead);
-  color: var(--obang-hanji);
+  background: var(--action);
+  color: var(--on-action);
   font-family: var(--font);
   font-size: 18px;
   font-weight: var(--weight-heavy);

@@ -1,13 +1,20 @@
 import { useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
+import BeamTitle from '../components/BeamTitle';
 import ErrorCard from '../components/ErrorCard';
+import LandscapeHero from '../components/LandscapeHero';
 import MemberField from '../components/MemberField';
+import { PAGE_NAMES } from '../components/pageNames';
 import PieceCard from '../components/PieceCard';
+import Rosette from '../components/Rosette';
 import { getCurrentMember, getLastPracticed, setCurrentMember } from '../storage/progress';
 import { usePieceLibrary, type PieceEntryState } from './usePieceLibrary';
 import './Library.css';
 
-/** Library page (SPEC §4.1): member name field, then one card per piece in index.json. */
+/**
+ * Library page (SPEC §4.1; DESIGN.md §5.2, full ornament): the painted hero, the hanging plaque,
+ * the member name field, then one card per piece in index.json.
+ */
 export default function Library() {
   const [member, setMember] = useState(getCurrentMember);
   const { loading, indexError, entries } = usePieceLibrary();
@@ -19,31 +26,39 @@ export default function Library() {
   }
 
   return (
-    <section className="library">
-      <div className="library-head">
-        <h1 className="library-title">Library</h1>
-        <Link className="library-new" to="/edit">
-          + New piece
-        </Link>
-      </div>
-      <MemberField value={member} onChange={handleMemberChange} />
-      {indexError !== null ? (
-        <p className="library-status library-status--error" role="alert">
-          {indexError}
-        </p>
-      ) : null}
-      {loading ? <p className="library-status">Loading pieces...</p> : null}
-      {empty ? <p className="library-status">No pieces in public/pieces/index.json</p> : null}
-      {entries.length > 0 ? (
-        <ul className="library-grid">
-          {entries.map((entry, i) => (
-            <li key={`${i}:${entry.id}`} className="library-item">
-              <LibraryEntry entry={entry} member={member} />
-            </li>
-          ))}
-        </ul>
-      ) : null}
-    </section>
+    <>
+      <LandscapeHero />
+      <BeamTitle {...PAGE_NAMES.library} rosettes />
+      <section className="library page">
+        <div className="library-toolbar">
+          <MemberField value={member} onChange={handleMemberChange} />
+          <Link className="library-new" to="/edit">
+            + New piece
+          </Link>
+        </div>
+        {indexError !== null ? (
+          <p className="library-status library-status--error" role="alert">
+            {indexError}
+          </p>
+        ) : null}
+        {loading ? <p className="library-status">Loading pieces...</p> : null}
+        {empty ? (
+          <div className="library-empty">
+            <Rosette size={48} />
+            <p className="library-status">No pieces in public/pieces/index.json</p>
+          </div>
+        ) : null}
+        {entries.length > 0 ? (
+          <ul className="library-grid">
+            {entries.map((entry, i) => (
+              <li key={`${i}:${entry.id}`} className="library-item">
+                <LibraryEntry entry={entry} member={member} />
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </section>
+    </>
   );
 }
 

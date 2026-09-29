@@ -61,6 +61,7 @@
   margin-left: var(--space-1);
   padding-top: var(--above-offset);
   color: var(--fg-muted);
+  font-family: var(--font-notation);
   font-size: var(--hand-size);
   font-weight: var(--weight-heavy);
   line-height: calc(var(--hand-size) + var(--letter-pad));

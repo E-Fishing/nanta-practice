@@ -4,9 +4,12 @@ import CellMenu from '../components/CellMenu';
 import EditorToolbar, { type EditorNotice } from '../components/EditorToolbar';
 import ErrorCard from '../components/ErrorCard';
 import InstrumentEditor from '../components/InstrumentEditor';
+import PageNav, { type PageNavItem } from '../components/PageNav';
+import { PAGE_NAMES } from '../components/pageNames';
 import PartSelector from '../components/PartSelector';
 import PartsEditor from '../components/PartsEditor';
 import PieceMetaEditor from '../components/PieceMetaEditor';
+import Plaque from '../components/Plaque';
 import SectionEditor from '../components/SectionEditor';
 import {
   addSection,
@@ -31,7 +34,10 @@ import { useEditablePiece } from './useEditablePiece';
 import { usePiece } from './usePiece';
 import './Editor.css';
 
-/** Editor page (SPEC §4.4): `/edit` starts a new piece, `/edit/:pieceId` edits an existing one. */
+/**
+ * Editor page (SPEC §4.4; DESIGN.md §5.6, lines only): `/edit` starts a new piece, `/edit/:pieceId`
+ * edits an existing one. The editing grid stays plain paper.
+ */
 export default function Editor() {
   const { pieceId } = useParams();
   const state = usePiece(pieceId);
@@ -39,13 +45,20 @@ export default function Editor() {
   if (pieceId === undefined) return <LoadedEditor key="new" initial={emptyPiece()} local={false} routeId={null} />;
   return (
     <>
-      {state.status === 'loading' ? <p className="editor-status">Loading {pieceId}...</p> : null}
+      {state.status === 'loading' ? (
+        <section className="editor page">
+          <p className="editor-status">Loading {pieceId}...</p>
+        </section>
+      ) : null}
       {state.status === 'error' ? (
-        <section className="editor">
+        <section className="editor page">
           <EditorNav pieceId={null} />
+          <Plaque variant="lines" {...PAGE_NAMES.editor} />
           <ErrorCard pieceId={pieceId} message={state.message} path={state.path} />
           <p className="editor-status">
-            <Link to="/edit">Start a new piece instead</Link>
+            <Link className="editor-button" to="/edit">
+              Start a new piece instead
+            </Link>
           </p>
         </section>
       ) : null}
@@ -59,18 +72,9 @@ function guardLeave(event: MouseEvent<HTMLAnchorElement>) {
 }
 
 function EditorNav({ pieceId }: { pieceId: string | null }) {
-  return (
-    <nav className="editor-nav">
-      <Link to="/" onClick={guardLeave}>
-        ← Library
-      </Link>
-      {pieceId !== null ? (
-        <Link to={`/play/${pieceId}`} onClick={guardLeave}>
-          Player
-        </Link>
-      ) : null}
-    </nav>
-  );
+  const items: PageNavItem[] = [{ to: '/', back: true, ...PAGE_NAMES.library }];
+  if (pieceId !== null) items.push({ to: `/play/${pieceId}`, ...PAGE_NAMES.player });
+  return <PageNav items={items} onNavigate={guardLeave} />;
 }
 
 interface OpenMenu {
@@ -206,7 +210,7 @@ function LoadedEditor({ initial, local, routeId }: LoadedEditorProps) {
   }
 
   return (
-    <section className={dragging ? 'editor editor--dragging' : 'editor'} onDragEnter={onDragEnter} onDragOver={(e) => e.preventDefault()} onDragLeave={onDragLeave} onDrop={onDrop}>
+    <section className={dragging ? 'editor page editor--dragging' : 'editor page'} onDragEnter={onDragEnter} onDragOver={(e) => e.preventDefault()} onDragLeave={onDragLeave} onDrop={onDrop}>
       <EditorNav pieceId={routeId} />
       <EditorToolbar
         dirty={editor.dirty}
@@ -223,6 +227,7 @@ function LoadedEditor({ initial, local, routeId }: LoadedEditorProps) {
         onRemoveLocal={removeLocal}
       />
       <header className="editor-header">
+        <Plaque variant="lines" {...PAGE_NAMES.editor} />
         <h1 className="editor-title">{json.title || 'Untitled piece'}</h1>
         <p className="editor-help">Click a cell to cycle rest → R → L → B → hold. Right-click or hold a cell for surface, marks and gu-eum. Drop a piece JSON file anywhere here to open it.</p>
       </header>

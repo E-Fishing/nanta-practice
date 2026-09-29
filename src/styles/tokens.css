@@ -1,29 +1,87 @@
-/* Design tokens (SPEC.md §5). Obangsaek palette, type sizes, spacing. */
+/* Design tokens (DESIGN.md §2–§4). Pigments are fixed colors; components use the roles below them. */
 :root {
-  --obang-blue: #2a5caa;
-  --obang-red: #c8352e;
-  --obang-yellow: #e9b949;
-  --obang-black: #1b1b1b;
-  --obang-hanji: #f6f1e7;
+  /* Pigments (DESIGN.md §2.1): the same in both themes. */
+  --jade-900: #0e3a30;
+  --jade-800: #134b3e;
+  --jade-700: #1a6150;
+  --jade-500: #2b8a6e;
+  --jade-300: #86c4aa;
+  --jade-100: #d7ede3;
+  --blue-900: #14285e;
+  --blue-700: #1e4596;
+  --blue-500: #3a6cc8;
+  --blue-300: #93b2ec;
+  --blue-100: #dce5f7;
+  --vermilion-800: #8a2a1e;
+  --vermilion-600: #c0392b;
+  --vermilion-500: #d9482f;
+  --vermilion-400: #e86a48;
+  --vermilion-200: #f5b9a0;
+  --gold-700: #7c5e1a;
+  --gold-500: #b38a32;
+  --gold-400: #d1a43f;
+  --gold-200: #ebd59a;
+  --yellow-600: #d49b17;
+  --yellow-400: #e9b949;
+  --ivory-50: #fffbf3;
+  --ivory-100: #f6eedc;
+  --ivory-200: #ede1c8;
+  --ivory-400: #d6c6a4;
+  --ink-1000: #0e0d0b;
+  --ink-950: #141311;
+  --ink-900: #1a1714;
+  --ink-700: #3d372f;
+  --ink-600: #5e564a;
+  --ink-500: #6f6759;
+  --ink-300: #b5aa95;
 
-  /* Roles: light mode */
-  --bg: var(--obang-hanji);
-  --fg: var(--obang-black);
-  --fg-muted: #6b665c;
-  --surface: #fffdf8;
-  --border: rgba(27, 27, 27, 0.16);
-  --playhead: var(--obang-blue);
-  --danger: var(--obang-red);
-  --reveal: var(--obang-yellow);
-  --link: var(--obang-blue);
+  /* Roles, light theme (DESIGN.md §2.2). Blue = where the music is; jade = your choice. */
+  --bg: var(--ivory-100);
+  --surface: var(--ivory-50);
+  --fg: var(--ink-900);
+  --fg-muted: var(--ink-600);
+  --border: rgb(26 23 20 / 0.22);
+  --frame: var(--ink-700);
+  --cell-bg: rgb(26 23 20 / 0.05);
+  --beam: var(--jade-700);
+  --on-beam: var(--ivory-50);
+  --plaque: var(--blue-900);
+  --on-plaque: var(--ivory-50);
+  /* The English label under Korean display text: on paper, and on beams or plaques. */
+  --gloss: var(--fg-muted);
+  --gloss-on-color: var(--gold-200);
+  --action: var(--jade-700);
+  --on-action: var(--ivory-50);
+  --action-edge: var(--jade-700);
+  --playhead: var(--blue-700);
+  --on-playhead: var(--ivory-50);
+  --playhead-wash: rgb(30 69 150 / 0.12);
+  --danger: var(--vermilion-600);
+  --on-danger: var(--ivory-50);
+  --reveal: var(--yellow-400);
+  --on-reveal: var(--ink-900);
+  --heat-early: var(--playhead);
+  --heat-late: var(--yellow-600);
+  --heat-miss: var(--danger);
+  --late-text: var(--gold-700);
+  --link: var(--blue-700);
+  --focus: var(--blue-700);
+  --focus-on-color: var(--ivory-50);
 
-  /* Type */
+  /* Type (DESIGN.md §3). Hand letters and syllables keep their sizes. */
   --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+  --font-display: 'Noto Serif KR', 'Nanum Myeongjo', AppleMyungjo, Batang, Georgia, serif;
+  --font-notation: 'Noto Sans KR', system-ui, -apple-system, 'Segoe UI', Roboto, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
   --weight-heavy: 800;
+  --weight-display: 900;
   --hand-size: 28px;
   --gueum-size: 14px;
   --text-size: 16px;
   --small-size: 13px;
+  --title-size: 40px;
+  --title-compact-size: 30px;
+  --card-title-size: 28px;
+  --section-size: 22px;
 
   /* Spacing and shape */
   --space-1: 4px;
@@ -32,50 +90,100 @@
   --space-4: 16px;
   --space-6: 24px;
   --space-8: 32px;
-  --radius: 8px;
+  --radius: 6px;
+  /* Panels, cards and plaques are square like timber. */
+  --radius-panel: 2px;
+  --frame-width: 1.5px;
   --tap-min: 56px;
+  --main-max: 1100px;
+  --page-pad: var(--space-4);
 
   /* Motion: nothing longer than 150ms except the playhead. */
   --dur-fast: 120ms;
+
+  /* Ornament (DESIGN.md §4): band heights, the hwi tile, dividing lines, the hanji ground.
+     The tiles are inline SVG data URIs: Vite does not rewrite url() inside custom properties.
+     Hwi tile: viewBox 48×16, two groups of three graded ")" stripes (jade, then blue) on ivory. */
+  --band-s: 6px;
+  --band-m: 12px;
+  --band-l: 24px;
+  --band-l-rule: 3px;
+  --orn-ink: var(--ink-900);
+  --orn-ivory: var(--ivory-50);
+  --orn-hwi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='16' viewBox='0 0 48 16'%3E%3Crect width='48' height='16' fill='%23fffbf3'/%3E%3Cpath fill='%23134b3e' d='M0 0Q8 8 0 16L6 16Q14 8 6 0Z'/%3E%3Cpath fill='%232b8a6e' d='M8 0Q16 8 8 16L14 16Q22 8 14 0Z'/%3E%3Cpath fill='%2386c4aa' d='M16 0Q24 8 16 16L22 16Q30 8 22 0Z'/%3E%3Cpath fill='%2314285e' d='M24 0Q32 8 24 16L30 16Q38 8 30 0Z'/%3E%3Cpath fill='%233a6cc8' d='M32 0Q40 8 32 16L38 16Q46 8 38 0Z'/%3E%3Cpath fill='%2393b2ec' d='M40 0Q48 8 40 16L46 16Q54 8 46 0Z'/%3E%3Cpath fill='%2393b2ec' d='M-8 0Q0 8 -8 16L-2 16Q6 8 -2 0Z'/%3E%3C/svg%3E");
+  --orn-hanji: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256' viewBox='0 0 256 256'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008 0.5' numOctaves='2' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.36 0 0 0 0 0.22 0 0 0 5 -3'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23f)' opacity='0.28'/%3E%3C/svg%3E");
+  /* 먹선 and 분선: an ink line then an ivory line along both edges of a hwi band. */
+  --orn-edges: linear-gradient(
+    to bottom,
+    var(--orn-ink) 0 1px,
+    var(--orn-ivory) 1px 2px,
+    transparent 2px calc(100% - 2px),
+    var(--orn-ivory) calc(100% - 2px) calc(100% - 1px),
+    var(--orn-ink) calc(100% - 1px)
+  );
+  /* Band S, 긋기 lines: ink, vermilion, ivory, jade. */
+  --orn-lines: linear-gradient(
+    to bottom,
+    var(--orn-ink) 0 1px,
+    var(--vermilion-600) 1px 3px,
+    var(--orn-ivory) 3px 4px,
+    var(--jade-700) 4px 6px
+  );
+  /* Band M: hwi stripes between the edge lines. */
+  --orn-band-m: var(--orn-edges), var(--orn-hwi) left center / auto 100% repeat-x;
 }
 
 @media (max-width: 600px) {
   :root {
     --hand-size: 22px;
     --gueum-size: 12px;
+    --title-size: 30px;
+    --title-compact-size: 24px;
+    --card-title-size: 24px;
+    --section-size: 20px;
+    --band-m: 10px;
+    --band-l: 16px;
+    --band-l-rule: 2px;
   }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #141414;
-    --fg: var(--obang-hanji);
-    --fg-muted: #a8a196;
-    --surface: #1e1d1b;
-    --border: rgba(246, 241, 231, 0.18);
-    --link: #7ea6e6;
+    --bg: var(--ink-1000);
+    --surface: var(--ink-950);
+    --fg: var(--ivory-50);
+    --fg-muted: var(--ink-300);
+    --border: rgb(255 251 243 / 0.22);
+    --frame: var(--ink-500);
+    --cell-bg: rgb(255 251 243 / 0.07);
+    --beam: var(--jade-800);
+    --action-edge: var(--jade-300);
+    --playhead: var(--blue-300);
+    --on-playhead: var(--ink-900);
+    --playhead-wash: rgb(147 178 236 / 0.16);
+    --danger: var(--vermilion-400);
+    --on-danger: var(--ink-900);
+    --heat-late: var(--yellow-400);
+    --late-text: var(--yellow-400);
+    --link: var(--blue-300);
+    --focus: var(--blue-300);
+    --orn-ivory: var(--ivory-400);
+    --orn-hwi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='16' viewBox='0 0 48 16'%3E%3Crect width='48' height='16' fill='%23d6c6a4'/%3E%3Cpath fill='%230e3a30' d='M0 0Q8 8 0 16L6 16Q14 8 6 0Z'/%3E%3Cpath fill='%231a6150' d='M8 0Q16 8 8 16L14 16Q22 8 14 0Z'/%3E%3Cpath fill='%232b8a6e' d='M16 0Q24 8 16 16L22 16Q30 8 22 0Z'/%3E%3Cpath fill='%230f1f4a' d='M24 0Q32 8 24 16L30 16Q38 8 30 0Z'/%3E%3Cpath fill='%231e4596' d='M32 0Q40 8 32 16L38 16Q46 8 38 0Z'/%3E%3Cpath fill='%233a6cc8' d='M40 0Q48 8 40 16L46 16Q54 8 46 0Z'/%3E%3Cpath fill='%233a6cc8' d='M-8 0Q0 8 -8 16L-2 16Q6 8 -2 0Z'/%3E%3C/svg%3E");
+    --orn-hanji: none;
   }
 }
 
-/* Chart cells (SPEC §4.2, §5). Widths derive from the hand letter size so phones scale down. */
+/* Chart cells (SPEC §4.2). Widths derive from the hand letter size so phones scale down. */
 :root {
   --cell-width: calc(var(--hand-size) + 10px);
   --cell-gap: 2px;
   --group-gap: var(--space-4);
   --mark-size: 10px;
-  --cell-bg: rgba(27, 27, 27, 0.045);
   --cell-radius: 6px;
   /* Extra room around the letter (the strong-accent circle needs it). */
   --letter-pad: 8px;
-  /* Thin dancheong stripe for section headers: the five obangsaek colors, restrained. */
-  --dancheong-stripe: repeating-linear-gradient(
-    90deg,
-    var(--obang-blue) 0 12px,
-    var(--obang-red) 12px 24px,
-    var(--obang-yellow) 24px 36px,
-    var(--obang-black) 36px 48px,
-    var(--obang-hanji) 48px 60px
-  );
+  /* Inner padding of the chart panel; section beams reach across it to the frame. */
+  --chart-pad: 20px;
 }
 
 /* Phones: tighter cells and group gaps so a 10-cell group fits beside the line number. */
@@ -84,11 +192,6 @@
     --cell-width: calc(var(--hand-size) + 8px);
     --group-gap: var(--space-3);
     --letter-pad: 6px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --cell-bg: rgba(246, 241, 231, 0.07);
+    --chart-pad: var(--page-pad);
   }
 }

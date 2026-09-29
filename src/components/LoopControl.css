@@ -43,7 +43,7 @@
 }
 
 .loop-control-select:focus-visible {
-  outline: 3px solid var(--playhead);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 

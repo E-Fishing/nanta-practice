@@ -1,14 +1,23 @@
-/* MarkLegend: collapsible reference of the chart marks. */
+/* MarkLegend: collapsible reference of the chart marks, on a plain paper panel. */
 .mark-legend {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: var(--frame-width) solid var(--frame);
+  border-radius: var(--radius-panel);
   background: var(--surface);
 }
 
 .mark-legend-summary {
-  padding: var(--space-3) var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
   font-weight: var(--weight-heavy);
   cursor: pointer;
+}
+
+.mark-legend-summary:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
 }
 
 .mark-legend-list {
@@ -30,4 +39,10 @@
   color: var(--fg-muted);
   font-size: var(--small-size);
   font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .mark-legend-summary {
+    min-height: var(--tap-min);
+  }
 }

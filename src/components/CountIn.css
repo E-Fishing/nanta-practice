@@ -17,6 +17,7 @@
 .count-in-beat {
   min-width: 1.2em;
   color: var(--playhead);
+  font-family: var(--font-notation);
   font-size: calc(var(--hand-size) + 12px);
   font-weight: var(--weight-heavy);
   line-height: 1;

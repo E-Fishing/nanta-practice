@@ -1,0 +1,37 @@
+/* BeamTitle: the plaque hangs from the band's center line; rosettes sit centered on the band. */
+.beam-title {
+  --rosette-size: 48px;
+  display: flex;
+  flex-direction: column;
+}
+
+.beam-title-row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin-top: calc(var(--band-l) / -2);
+  padding-inline: var(--page-pad);
+}
+
+.beam-title-rosette {
+  width: var(--rosette-size);
+  height: var(--rosette-size);
+  margin-top: calc(var(--rosette-size) / -2);
+}
+
+/* Inside a page column the band reaches the column's edges. */
+.page > .beam-title {
+  margin-inline: calc(-1 * var(--page-pad));
+}
+
+@media (max-width: 600px) {
+  .beam-title {
+    --rosette-size: 32px;
+  }
+
+  .beam-title-row {
+    gap: var(--space-3);
+  }
+}

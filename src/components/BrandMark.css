@@ -1,0 +1,35 @@
+/* BrandMark: pigments only, so it looks the same in both themes. */
+.brand-mark {
+  display: block;
+  flex: none;
+}
+
+.brand-mark-rim {
+  fill: var(--ivory-50);
+  stroke: var(--ink-900);
+  stroke-width: 1.5;
+}
+
+.brand-mark-ring {
+  fill: none;
+  stroke: var(--gold-500);
+  stroke-width: 2;
+}
+
+.brand-mark-red {
+  fill: var(--vermilion-600);
+}
+
+.brand-mark-blue {
+  fill: var(--blue-700);
+}
+
+.brand-mark-yellow {
+  fill: var(--gold-400);
+}
+
+.brand-mark-edge {
+  fill: none;
+  stroke: var(--ink-900);
+  stroke-width: 1;
+}

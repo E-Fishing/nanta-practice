@@ -19,11 +19,22 @@
   text-align: right;
 }
 
+/* A group longer than the screen scrolls inside its line, never the whole page. */
 .line-editor-groups {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-2) var(--group-gap);
+  min-width: 0;
+  overflow-x: auto;
+}
+
+/* A group and its "+": the "+" wraps under the group when the row is full. */
+.line-editor-cluster {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
   min-width: 0;
 }
 
@@ -38,7 +49,6 @@
 .line-editor-add-cell {
   width: 28px;
   min-height: 44px;
-  margin-left: var(--space-1);
   border: 2px dashed var(--border);
   border-radius: var(--cell-radius);
   background: transparent;
@@ -58,7 +68,7 @@
 }
 
 .line-editor-add-cell:focus-visible {
-  outline: 3px solid var(--playhead);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -89,4 +99,12 @@
   display: inline-flex;
   gap: var(--space-1);
   margin-left: auto;
+}
+
+/* Phones: the "+" is a full 56 px tap target (SPEC §5). */
+@media (max-width: 600px) {
+  .line-editor-add-cell {
+    width: var(--tap-min);
+    min-height: var(--tap-min);
+  }
 }

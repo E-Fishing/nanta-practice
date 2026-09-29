@@ -222,15 +222,15 @@ Stored in localStorage under `nanta.progress.v1`:
 
 ## 5. Visual style
 
-- Palette from **obangsaek** (five directional colors):
-  - Blue `#2A5CAA`, Red `#C8352E`, Yellow `#E9B949`, Black `#1B1B1B`, White/hanji `#F6F1E7`
-  - Light mode: hanji background, black text, blue playhead, red for strong accents and misses, yellow for hidden-cell reveals.
-  - Dark mode: `#141414` background, hanji-colored text, same accent roles.
-- Subtle paper texture on the page background (CSS noise or a tiny tiled PNG, not a large image).
-- Section headers get a thin dancheong-style repeating border (CSS gradient stripes in the five colors, restrained).
-- Type: a heavy sans for hand letters and syllables (system-ui 800 weight is fine; optionally Noto Sans KR). Hand letters ≥ 28 px on desktop, ≥ 22 px on phones. Readable from two meters away.
-- Tap targets ≥ 56 px on mobile. Drill buttons fill the bottom third of the screen.
+The look of the site is specified in **[DESIGN.md](DESIGN.md)**: direction, palette tokens for light and dark mode, type, the dancheong ornament system, the treatment of each page, and the spec for the Library landscape art (`public/art/landscape.webp`). DESIGN.md replaces the palette and ornament notes that used to be here.
+
+Hard rules. These come first, and if DESIGN.md ever conflicts with them, the rules win (this is a practice tool read from two meters away):
+- The chart/notation area, the drill tap pad and the transport bar sit on a plain, high-contrast surface with no artwork or pattern behind them. Ornament goes around them, never under.
+- Hand letters ≥ 28 px on desktop, ≥ 22 px on phones. Every notation mark (circle, triangle, underline, up-arrow, X, tilde, boxed syllable, grace letter) stays at least as legible as it was before the redesign.
+- Tap targets ≥ 56 px on phones. Drill buttons fill the bottom third of the screen. No horizontal scroll at 390 px.
+- No image over 300 KB. Landscape art is WebP and lazy-loaded. Nothing is added to the playback animation frame.
 - No animations longer than 150 ms except the playhead.
+- Korean motifs only. Styles stay in tokens.css + component CSS, no CSS framework.
 
 ---
 

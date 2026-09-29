@@ -1,12 +1,12 @@
-/* DrillSetup: section select, mode radio buttons, options, blurb. */
+/* DrillSetup: section select, mode radio buttons, options, blurb, on a plain paper panel. */
 .drill-setup {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-3) var(--space-6);
   padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: var(--frame-width) solid var(--frame);
+  border-radius: var(--radius-panel);
   background: var(--surface);
 }
 
@@ -35,7 +35,7 @@
 
 .drill-setup-select:focus-visible,
 .drill-setup-mode:focus-visible {
-  outline: 3px solid var(--playhead);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -66,9 +66,9 @@
 }
 
 .drill-setup-mode--selected {
-  border-color: var(--playhead);
-  background: var(--playhead);
-  color: var(--obang-hanji);
+  border-color: var(--action-edge);
+  background: var(--action);
+  color: var(--on-action);
 }
 
 .drill-setup-mode:disabled,
@@ -87,7 +87,7 @@
 .drill-setup-check input {
   width: 22px;
   height: 22px;
-  accent-color: var(--playhead);
+  accent-color: var(--action);
 }
 
 .drill-setup-blurb {
@@ -99,7 +99,8 @@
 
 @media (max-width: 600px) {
   .drill-setup-select,
-  .drill-setup-mode {
+  .drill-setup-mode,
+  .drill-setup-check {
     min-height: var(--tap-min);
   }
 }

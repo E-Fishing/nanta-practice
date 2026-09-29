@@ -1,0 +1,52 @@
+/* BeamBand: two halves of hwi stripes anchored at the center, the right half mirrored. */
+.beam-band {
+  position: relative;
+  display: flex;
+  flex: none;
+  height: var(--band-m);
+}
+
+.beam-band--l {
+  height: var(--band-l);
+}
+
+.beam-band-half {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.beam-band--m .beam-band-half {
+  background: var(--orn-edges), var(--orn-hwi) right center / auto 100% repeat-x;
+}
+
+/* Band L: ink, vermilion rule, ivory line, hwi, ivory line, vermilion rule, ink. */
+.beam-band--l .beam-band-half {
+  border-block: 1px solid var(--orn-ink);
+  background:
+    linear-gradient(
+      to bottom,
+      var(--vermilion-600) 0 var(--band-l-rule),
+      var(--orn-ivory) var(--band-l-rule) calc(var(--band-l-rule) + 1px),
+      transparent calc(var(--band-l-rule) + 1px) calc(100% - var(--band-l-rule) - 1px),
+      var(--orn-ivory) calc(100% - var(--band-l-rule) - 1px) calc(100% - var(--band-l-rule)),
+      var(--vermilion-600) calc(100% - var(--band-l-rule))
+    ),
+    var(--orn-hwi) right center / auto calc(100% - 2 * var(--band-l-rule)) repeat-x;
+}
+
+.beam-band-half--mirror {
+  transform: scaleX(-1);
+}
+
+/* The center of the beam, where the two painted halves meet. */
+.beam-band::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 8px;
+  margin-left: -4px;
+  border-block: 1px solid var(--orn-ink);
+  background: var(--vermilion-600);
+}

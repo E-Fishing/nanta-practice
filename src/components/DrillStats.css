@@ -49,7 +49,7 @@
 }
 
 .drill-stat--late .drill-stat-value {
-  color: #a37b12;
+  color: var(--late-text);
 }
 
 .drill-stats-legend {
@@ -68,11 +68,11 @@
 }
 
 .drill-stats-swatch--early {
-  background: var(--obang-blue);
+  background: var(--heat-early);
 }
 
 .drill-stats-swatch--late {
-  background: var(--obang-yellow);
+  background: var(--heat-late);
 }
 
 .drill-stats-swatch--on {
@@ -80,13 +80,7 @@
 }
 
 .drill-stats-swatch--miss {
-  background: var(--danger);
-}
-
-@media (prefers-color-scheme: dark) {
-  .drill-stat--late .drill-stat-value {
-    color: var(--obang-yellow);
-  }
+  background: var(--heat-miss);
 }
 
 /* Cue drill: one line per section entry. */
@@ -109,7 +103,7 @@
 }
 
 .drill-stats-transition--late {
-  color: #a37b12;
+  color: var(--late-text);
 }
 
 .drill-stats-transition--miss,
@@ -135,10 +129,4 @@
   margin: 0;
   padding-left: 1.4em;
   font-weight: 600;
-}
-
-@media (prefers-color-scheme: dark) {
-  .drill-stats-transition--late {
-    color: var(--obang-yellow);
-  }
 }

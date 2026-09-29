@@ -1,8 +1,15 @@
-/* Chart: sections stacked vertically, each a header followed by its lines. */
+/*
+ * Chart: the notation panel. Plain paper with a thin ink frame and nothing behind any cell
+ * (DESIGN.md §4.3); sections stacked vertically, each a beam, a header row, then its lines.
+ */
 .chart {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
+  padding: 0 var(--chart-pad) var(--chart-pad);
+  border: var(--frame-width) solid var(--frame);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
 }
 
 .chart-section {
@@ -21,4 +28,13 @@
   color: var(--fg-muted);
   font-size: var(--text-size);
   font-style: italic;
+}
+
+/* Phones: the panel reaches both screen edges so lines keep the full width (358 px at 390). */
+@media (max-width: 600px) {
+  .chart {
+    margin-inline: calc(-1 * var(--page-pad));
+    border-inline: 0;
+    border-radius: 0;
+  }
 }

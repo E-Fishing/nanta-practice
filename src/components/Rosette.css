@@ -1,0 +1,53 @@
+/* Rosette: pigments with ivory dividing lines (분선) and ink outlines (먹선). */
+.rosette {
+  display: block;
+  flex: none;
+}
+
+.rosette-outer {
+  stroke: var(--ink-900);
+  stroke-width: 1;
+}
+
+.rosette-inner {
+  stroke: var(--ivory-50);
+  stroke-width: 1.5;
+}
+
+.rosette-petal--jade .rosette-outer {
+  fill: var(--jade-700);
+}
+
+.rosette-petal--jade .rosette-inner {
+  fill: var(--jade-300);
+}
+
+.rosette-petal--blue .rosette-outer {
+  fill: var(--blue-700);
+}
+
+.rosette-petal--blue .rosette-inner {
+  fill: var(--blue-300);
+}
+
+.rosette-petal--red .rosette-outer {
+  fill: var(--vermilion-500);
+}
+
+.rosette-petal--red .rosette-inner {
+  fill: var(--vermilion-200);
+}
+
+.rosette-heart {
+  fill: var(--gold-400);
+  stroke: var(--ink-900);
+  stroke-width: 1;
+}
+
+.rosette-seed {
+  fill: var(--ivory-50);
+}
+
+.rosette-center {
+  fill: var(--vermilion-600);
+}

@@ -1,15 +1,27 @@
-/* DrillPad: sticky bottom area; with tapping on it fills the bottom third of the screen. */
+/*
+ * DrillPad: sticky bottom area; with tapping on it fills the bottom third of the screen. Plain
+ * paper under every tap target; the only ornament is band S along its top edge (DESIGN.md §5.4).
+ */
 .drill-pad {
   position: sticky;
   bottom: 0;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  margin: 0 calc(-1 * var(--space-4));
-  padding: var(--space-2) var(--space-4) calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
-  border-top: 1px solid var(--border);
+  margin: 0 calc(-1 * var(--page-pad));
+  padding: calc(var(--band-s) + var(--space-2)) var(--page-pad) calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
   background: var(--surface);
   box-shadow: 0 -6px 18px rgba(27, 27, 27, 0.08);
+}
+
+.drill-pad::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--band-s);
+  background: var(--orn-lines);
 }
 
 .drill-pad--tapping {
@@ -23,10 +35,10 @@
   gap: var(--space-2) var(--space-3);
 }
 
-/* The count-in or the sound gate, over everything in the pad. */
+/* The count-in or the sound gate, over everything in the pad except its painted edge. */
 .drill-pad-overlay {
   position: absolute;
-  inset: 0;
+  inset: var(--band-s) 0 0;
   z-index: 1;
   display: flex;
   align-items: center;
@@ -63,14 +75,15 @@
   transition: background-color var(--dur-fast);
 }
 
+/* A tap is your input: jade (DESIGN.md §2.3). */
 .drill-pad-half:active:not(:disabled) {
-  background: var(--playhead);
-  color: var(--obang-hanji);
-  border-color: var(--playhead);
+  background: var(--action);
+  color: var(--on-action);
+  border-color: var(--action-edge);
 }
 
 .drill-pad-half:focus-visible {
-  outline: 3px solid var(--playhead);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -80,6 +93,7 @@
 }
 
 .drill-pad-hand {
+  font-family: var(--font-notation);
   font-size: calc(var(--hand-size) + 16px);
   font-weight: var(--weight-heavy);
   line-height: 1;
@@ -122,7 +136,7 @@
 }
 
 .drill-pad-verdict--late {
-  color: #a37b12;
+  color: var(--late-text);
 }
 
 .drill-pad-verdict--miss,
@@ -156,10 +170,6 @@
 @media (prefers-color-scheme: dark) {
   .drill-pad {
     box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.4);
-  }
-
-  .drill-pad-verdict--late {
-    color: var(--obang-yellow);
   }
 }
 

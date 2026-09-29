@@ -32,7 +32,7 @@
 }
 
 .drill-controls-button:focus-visible {
-  outline: 3px solid var(--playhead);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -43,9 +43,9 @@
 
 .drill-controls-button--primary {
   min-width: 96px;
-  border-color: var(--playhead);
-  background: var(--playhead);
-  color: var(--obang-hanji);
+  border-color: var(--action-edge);
+  background: var(--action);
+  color: var(--on-action);
 }
 
 .drill-controls-button--toggle[aria-pressed='true'] {
@@ -57,7 +57,7 @@
 .drill-controls-button--reveal {
   border-color: var(--reveal);
   background: var(--reveal);
-  color: var(--obang-black);
+  color: var(--on-reveal);
 }
 
 .drill-controls-tempo {
@@ -81,6 +81,14 @@
 }
 
 .drill-controls-button--stage {
-  border-color: var(--playhead);
-  color: var(--playhead);
+  border-color: var(--action-edge);
+  color: var(--fg);
+}
+
+/* Phones: every control is a full 56 px tap target (SPEC §5). */
+@media (max-width: 600px) {
+  .drill-controls-button {
+    min-width: var(--tap-min);
+    min-height: var(--tap-min);
+  }
 }

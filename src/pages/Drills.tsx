@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { slotKey, type CellState } from '../components/cellState';
 import Chart from '../components/Chart';
 import CountIn from '../components/CountIn';
@@ -9,7 +9,10 @@ import DrillPad from '../components/DrillPad';
 import DrillSetup from '../components/DrillSetup';
 import DrillStats from '../components/DrillStats';
 import ErrorCard from '../components/ErrorCard';
+import PageNav, { type PageNavItem } from '../components/PageNav';
+import { PAGE_NAMES } from '../components/pageNames';
 import PartSelector from '../components/PartSelector';
+import Plaque from '../components/Plaque';
 import SoundGate from '../components/SoundGate';
 import { chartKeysInRange, cueCellKeys, leadPartId, type DrillMode } from '../engine/drills';
 import type { Piece } from '../engine/types';
@@ -22,18 +25,23 @@ import { usePlayer } from './usePlayer';
 import { useTapKeys } from './useTapKeys';
 import './Drills.css';
 
-/** Drills page (SPEC §4.3): pick a part, a section and a mode; the player engine runs underneath. */
+/**
+ * Drills page (SPEC §4.3; DESIGN.md §5.4, ornament at the ends only): pick a part, a section and a
+ * mode; the player engine runs underneath. The chart and the tap pad stay plain paper.
+ */
 export default function Drills() {
   const { pieceId } = useParams();
   const state = usePiece(pieceId);
+  const nav: PageNavItem[] = [
+    { to: '/', back: true, ...PAGE_NAMES.library },
+    ...(pieceId ? [{ to: `/play/${pieceId}`, ...PAGE_NAMES.player }] : []),
+    { to: '/progress', ...PAGE_NAMES.progress },
+  ];
 
   return (
-    <section className="drills">
-      <nav className="drills-nav">
-        <Link to="/">← Library</Link>
-        {pieceId ? <Link to={`/play/${pieceId}`}>Player</Link> : null}
-        <Link to="/progress">Progress</Link>
-      </nav>
+    <section className="drills page">
+      <PageNav items={nav} />
+      {state.status !== 'loaded' ? <Plaque {...PAGE_NAMES.drills} /> : null}
       {state.status === 'loading' ? <p className="drills-status">Loading {pieceId}...</p> : null}
       {state.status === 'error' ? <ErrorCard pieceId={pieceId ?? '?'} message={state.message} path={state.path} /> : null}
       {state.status === 'loaded' ? <LoadedDrills key={state.piece.id} piece={state.piece} /> : null}
@@ -139,11 +147,14 @@ function LoadedDrills({ piece }: { piece: Piece }) {
   return (
     <>
       <header className="drills-header">
-        <h1 className="drills-title">{piece.title}</h1>
-        <p className="drills-meta">
-          Drills · {part.name}
-          {member === '' ? ' · progress is not saved: type your name on the Library page' : ` · saving progress for ${member}`}
-        </p>
+        <Plaque {...PAGE_NAMES.drills} />
+        <div className="drills-heading">
+          <h1 className="drills-title">{piece.title}</h1>
+          <p className="drills-meta">
+            Drills · {part.name}
+            {member === '' ? ' · progress is not saved: type your name on the Library page' : ` · saving progress for ${member}`}
+          </p>
+        </div>
       </header>
       <PartSelector parts={piece.parts} selectedId={part.id} onSelect={setPartId} />
       <DrillSetup

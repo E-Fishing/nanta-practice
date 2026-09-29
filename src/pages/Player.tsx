@@ -1,11 +1,14 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Chart from '../components/Chart';
 import ErrorCard from '../components/ErrorCard';
 import LoopControl from '../components/LoopControl';
 import MarkLegend from '../components/MarkLegend';
+import PageNav from '../components/PageNav';
+import { PAGE_NAMES } from '../components/pageNames';
 import PartMixer from '../components/PartMixer';
 import PartSelector from '../components/PartSelector';
+import Plaque from '../components/Plaque';
 import TempoControl from '../components/TempoControl';
 import Transport, { type TransportStatus } from '../components/Transport';
 import { linesInRange, type LineRef, type PulseRange } from '../engine/controls';
@@ -16,16 +19,18 @@ import { usePiece } from './usePiece';
 import { usePlayer } from './usePlayer';
 import './Player.css';
 
-/** Player page (SPEC §4.2): the chart of one part with follow-along playback and its controls. */
+/**
+ * Player page (SPEC §4.2; DESIGN.md §5.3, ornament at the ends only): the chart of one part with
+ * follow-along playback and its controls. The chart and the transport bar stay plain paper.
+ */
 export default function Player() {
   const { pieceId } = useParams();
   const state = usePiece(pieceId);
 
   return (
-    <section className="player">
-      <nav className="player-nav">
-        <Link to="/">← Library</Link>
-      </nav>
+    <section className="player page">
+      <PageNav items={[{ to: '/', back: true, ...PAGE_NAMES.library }]} />
+      {state.status !== 'loaded' ? <Plaque {...PAGE_NAMES.player} /> : null}
       {state.status === 'loading' ? <p className="player-status">Loading {pieceId}...</p> : null}
       {state.status === 'error' ? <ErrorCard pieceId={pieceId ?? '?'} message={state.message} path={state.path} /> : null}
       {state.status === 'loaded' ? <LoadedPlayer key={state.piece.id} piece={state.piece} /> : null}
@@ -79,11 +84,14 @@ function LoadedPlayer({ piece }: { piece: Piece }) {
   return (
     <>
       <header className="player-header">
-        <h1 className="player-title">{piece.title}</h1>
-        <p className="player-meta">
-          {piece.pulseBpm} pulses/min · {piece.sections.length} section{piece.sections.length === 1 ? '' : 's'}
-          {instrument ? ` · ${part.name} on ${instrument.name}` : ''}
-        </p>
+        <Plaque {...PAGE_NAMES.player} />
+        <div className="player-heading">
+          <h1 className="player-title">{piece.title}</h1>
+          <p className="player-meta">
+            {piece.pulseBpm} pulses/min · {piece.sections.length} section{piece.sections.length === 1 ? '' : 's'}
+            {instrument ? ` · ${part.name} on ${instrument.name}` : ''}
+          </p>
+        </div>
       </header>
       <PartSelector parts={piece.parts} selectedId={part.id} onSelect={selectPart} />
       <MarkLegend />

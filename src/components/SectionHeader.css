@@ -1,20 +1,36 @@
-/* SectionHeader: name + badges under a thin dancheong stripe (SPEC §5). */
+/*
+ * SectionHeader: a section beam (Band M with vermilion ends) across the whole chart panel, then
+ * the name and badges on plain paper below it (DESIGN.md §4.3: a divider, never a background).
+ * The beam is a pseudo-element, so playback re-renders do no extra work for it.
+ */
 .section-header {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: var(--space-1) var(--space-3);
-  padding-top: var(--space-2);
-  border-top: 3px solid transparent;
-  border-image: var(--dancheong-stripe) 3;
-  border-image-width: 3px 0 0 0;
+}
+
+.section-header::before {
+  content: '';
+  flex: 0 0 calc(100% + 2 * var(--chart-pad));
+  height: var(--band-m);
+  margin: 0 calc(-1 * var(--chart-pad)) calc(var(--space-3) - var(--space-1));
+  background:
+    linear-gradient(
+      to right,
+      var(--vermilion-600) 0 8px,
+      transparent 8px calc(100% - 8px),
+      var(--vermilion-600) calc(100% - 8px)
+    ),
+    var(--orn-band-m);
 }
 
 .section-header-name {
   margin: 0;
-  font-size: 20px;
-  font-weight: var(--weight-heavy);
-  line-height: 1.2;
+  font-family: var(--font-display);
+  font-size: var(--section-size);
+  font-weight: 700;
+  line-height: 1.25;
 }
 
 .section-header-badge {
@@ -55,7 +71,7 @@
 .section-header-badge--rep {
   border-color: var(--playhead);
   background: var(--playhead);
-  color: var(--obang-hanji);
+  color: var(--on-playhead);
 }
 
 /* The section (or some of its lines) is looped. */

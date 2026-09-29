@@ -1,32 +1,27 @@
-/* Progress page: member picker and export/import, then one card per piece. */
+/* Progress page: nav, the hanging plaque, member picker and export/import, then one card per piece. */
 .progress {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
 }
 
-.progress-nav {
-  font-weight: 600;
-}
-
 .progress-header {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  margin-top: var(--space-2);
 }
 
-.progress-title {
-  margin: 0;
-  font-size: var(--hand-size);
-  font-weight: var(--weight-heavy);
-  line-height: 1.15;
-}
-
+/* Member picker and export/import on one plain paper panel. */
 .progress-tools {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-2) var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: var(--frame-width) solid var(--frame);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
 }
 
 .progress-member {
@@ -60,8 +55,9 @@
 }
 
 .progress-select:focus-visible,
-.progress-button:focus-visible {
-  outline: 3px solid var(--playhead);
+.progress-button:focus-visible,
+.progress-piece-link:focus-visible {
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -84,34 +80,74 @@
   color: var(--danger);
 }
 
+/* Empty states are invitations: a rosette above the text (DESIGN.md §5.7). */
 .progress-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-6) 0;
+  text-align: center;
+}
+
+.progress-empty-text {
   margin: 0;
   color: var(--fg-muted);
   font-weight: 600;
 }
 
+/* One card per piece: a paper panel under a hwi lintel (Band M). */
 .progress-piece {
-  padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  padding: 0 var(--space-4) var(--space-3);
+  border: var(--frame-width) solid var(--frame);
+  border-radius: var(--radius-panel);
   background: var(--surface);
+}
+
+.progress-piece::before {
+  content: '';
+  display: block;
+  height: var(--band-m);
+  margin: 0 calc(-1 * var(--space-4)) var(--space-3);
+  background: var(--orn-band-m);
 }
 
 .progress-piece-title {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-3);
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
   margin: 0 0 var(--space-3);
-  font-size: 20px;
-  font-weight: var(--weight-heavy);
+  font-family: var(--font-display);
+  font-size: var(--section-size);
+  font-weight: 700;
+  line-height: 1.25;
 }
 
 .progress-piece-links {
   display: inline-flex;
-  gap: var(--space-3);
+  gap: var(--space-2);
+  font-family: var(--font);
+}
+
+/* Practice / Drills: links dressed as buttons, like the Library card's. */
+.progress-piece-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: var(--space-1) var(--space-3);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--fg);
   font-size: var(--text-size);
-  font-weight: 600;
+  font-weight: var(--weight-heavy);
+  text-decoration: none;
+  transition: border-color var(--dur-fast);
+}
+
+.progress-piece-link:hover {
+  border-color: var(--fg);
 }
 
 .progress-table {
@@ -143,6 +179,19 @@
   color: var(--fg-muted);
   font-size: var(--small-size);
   font-weight: 600;
+}
+
+/* Phones: 56 px tap targets (SPEC §5). */
+@media (max-width: 600px) {
+  .progress-select,
+  .progress-button,
+  .progress-piece-link {
+    min-height: var(--tap-min);
+  }
+
+  .progress-piece-link {
+    min-width: var(--tap-min);
+  }
 }
 
 /* Phones: each row becomes a stacked card. */

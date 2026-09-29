@@ -8,6 +8,7 @@
   border-radius: var(--cell-radius);
   background: var(--cell-bg);
   color: var(--fg);
+  font-family: var(--font-notation);
   font-weight: var(--weight-heavy);
   line-height: 1;
   user-select: none;
@@ -114,19 +115,20 @@
   font-size: calc(var(--hand-size) + 4px);
 }
 
-/* Playhead: the cell under the current pulse (SPEC §5: blue playhead, no transition so it stays crisp). */
+/* Playhead: the cell under the current pulse (blue playhead, no transition so it stays crisp).
+   Dark mode fills it light blue with ink letters (DESIGN.md §2.2). */
 .cell--current {
   background: var(--playhead);
-  color: var(--obang-hanji);
+  color: var(--on-playhead);
   box-shadow: 0 0 0 2px var(--playhead);
 }
 
 .cell--current.cell--extender {
-  color: var(--obang-hanji);
+  color: var(--on-playhead);
 }
 
 .cell--current.cell--rest .cell-letter {
-  border-color: var(--obang-hanji);
+  border-color: var(--on-playhead);
 }
 
 /* Cued: where playback will start (a jumped-to line, or the first cell during the count-in). */
@@ -171,11 +173,11 @@
 }
 
 .cell--heat-early {
-  --heat-color: var(--obang-blue);
+  --heat-color: var(--heat-early);
 }
 
 .cell--heat-late {
-  --heat-color: var(--obang-yellow);
+  --heat-color: var(--heat-late);
 }
 
 .cell--heat-on-time {
@@ -183,7 +185,7 @@
 }
 
 .cell--heat-miss {
-  --heat-color: var(--danger);
+  --heat-color: var(--heat-miss);
 }
 
 .cell--heat-miss.cell--hit .cell-letter,

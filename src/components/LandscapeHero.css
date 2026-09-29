@@ -1,0 +1,108 @@
+/* LandscapeHero: jade end zones either side of a framed 12:5 painting panel (3:2 on phones). */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 1280px) 1fr;
+  background: var(--beam);
+}
+
+.hero-end {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  container-type: inline-size;
+}
+
+/* A rosette only when the end zone is at least 128 px wide. */
+.hero-rosette {
+  display: none;
+  width: min(calc(100cqw - 32px), 128px);
+  height: auto;
+}
+
+@container (min-width: 128px) {
+  .hero-rosette {
+    display: block;
+  }
+}
+
+.hero-panel {
+  position: relative;
+  aspect-ratio: 12 / 5;
+  max-height: 60vh;
+  min-height: 240px;
+  overflow: hidden;
+  border-block: 4px solid var(--vermilion-600);
+  background: var(--ivory-200);
+}
+
+/* The gold line inside the vermilion frame. */
+.hero-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-block: 1px solid var(--gold-500);
+  pointer-events: none;
+}
+
+/* Side frames only when the panel stops short of the screen edges. */
+@media (min-width: 1281px) {
+  .hero-panel {
+    border-inline: 4px solid var(--vermilion-600);
+  }
+
+  .hero-panel::after {
+    border-inline: 1px solid var(--gold-500);
+  }
+}
+
+.hero-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+/* The placeholder: no picture, just the file it is waiting for. */
+.hero-placeholder {
+  position: absolute;
+  inset: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 2px dashed var(--ink-900);
+  color: var(--ink-900);
+  text-align: center;
+}
+
+.hero-placeholder-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: var(--weight-heavy);
+}
+
+.hero-placeholder-spec {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .hero-panel {
+    aspect-ratio: 3 / 2;
+    max-height: none;
+  }
+
+  .hero-placeholder-title {
+    font-size: 17px;
+  }
+
+  .hero-placeholder-spec {
+    font-size: 13px;
+  }
+}

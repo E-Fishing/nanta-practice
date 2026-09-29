@@ -1,14 +1,31 @@
-/* Transport: a bar of big controls stuck to the bottom of the viewport. */
+/*
+ * Transport: a bar of big controls stuck to the bottom of the viewport. Plain paper; the only
+ * ornament is band S (painted edge lines) along its top edge (DESIGN.md §5.3).
+ */
 .transport {
   position: sticky;
   bottom: 0;
   z-index: 2;
   /* Bleed to the page edges so it reads as a bottom bar on phones. */
-  margin: 0 calc(-1 * var(--space-4));
-  padding: var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
-  border-top: 1px solid var(--border);
+  margin: 0 calc(-1 * var(--page-pad));
+  padding: calc(var(--band-s) + var(--space-3)) var(--page-pad) calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
   background: var(--surface);
   box-shadow: 0 -6px 18px rgba(27, 27, 27, 0.08);
+}
+
+.transport::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--band-s);
+  background: var(--orn-lines);
+}
+
+/* The sound gate covers the controls, not the painted edge. */
+.transport > .sound-gate {
+  top: var(--band-s);
 }
 
 .transport-controls {
@@ -45,7 +62,7 @@
 }
 
 .transport-button:focus-visible {
-  outline: 3px solid var(--playhead);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -54,16 +71,16 @@
   cursor: default;
 }
 
+/* Play is your action: jade (DESIGN.md §2.3). */
 .transport-button--primary {
   min-width: 140px;
-  border-color: var(--playhead);
-  background: var(--playhead);
-  color: var(--obang-hanji);
+  border-color: var(--action-edge);
+  background: var(--action);
+  color: var(--on-action);
 }
 
 .transport-button--primary:hover:not(:disabled) {
-  border-color: var(--playhead);
-  filter: brightness(1.1);
+  border-color: var(--fg);
 }
 
 .transport-button--toggle[aria-pressed='true'] {

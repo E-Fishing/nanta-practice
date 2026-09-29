@@ -1,15 +1,9 @@
-/* Library page: name field on top, then a responsive grid of piece cards. */
+/* Library page: below the hero and plaque, the member row, then a responsive grid of piece cards. */
 .library {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
-}
-
-.library-title {
-  margin: 0;
-  font-size: var(--hand-size);
-  font-weight: var(--weight-heavy);
-  line-height: 1.15;
+  padding-top: var(--space-6);
 }
 
 .library-status {
@@ -26,7 +20,7 @@
 .library-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-4);
+  gap: var(--space-6) var(--space-4);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -36,18 +30,27 @@
   min-width: 0;
 }
 
-/* Title row with the "New piece" link (SPEC §4.4). */
-.library-head {
+/* Member name and "New piece" (SPEC §4.4) on one paper panel; wraps on phones. */
+.library-toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3);
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border: var(--frame-width) solid var(--frame);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+}
+
+.library-toolbar .member-field {
+  flex: 1 1 320px;
 }
 
 .library-new {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   min-height: calc(var(--tap-min) - var(--space-3));
   padding: var(--space-2) var(--space-4);
   border: 2px solid var(--border);
@@ -63,6 +66,23 @@
 }
 
 .library-new:focus-visible {
-  outline: 3px solid var(--playhead);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
+}
+
+/* Empty state: an invitation, so it gets a rosette (DESIGN.md §5.7). */
+.library-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-6) 0;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .library-new {
+    flex: 1 1 100%;
+    min-height: var(--tap-min);
+  }
 }

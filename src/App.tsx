@@ -1,5 +1,9 @@
 import type { MouseEvent } from 'react';
 import { HashRouter, Link, Route, Routes } from 'react-router-dom';
+import BeamBand from './components/BeamBand.tsx';
+import BiLabel from './components/BiLabel.tsx';
+import BrandMark from './components/BrandMark.tsx';
+import { PAGE_NAMES } from './components/pageNames.ts';
 import Library from './pages/Library.tsx';
 import Player from './pages/Player.tsx';
 import Drills from './pages/Drills.tsx';
@@ -16,13 +20,18 @@ export default function App() {
   return (
     <HashRouter>
       <div className="app">
+        {/* The header beam (DESIGN.md §5.1): jade ground, mirrored hwi band along its lower edge. */}
         <header className="app-header">
-          <Link to="/" className="app-title" onClick={guardLeave}>
-            Nanta Practice
-          </Link>
-          <Link to="/progress" onClick={guardLeave}>
-            Progress
-          </Link>
+          <div className="app-header-inner">
+            <Link to="/" className="app-brand" onClick={guardLeave}>
+              <BrandMark className="app-brand-mark" />
+              <BiLabel {...PAGE_NAMES.brand} />
+            </Link>
+            <Link to="/progress" className="app-nav-link" onClick={guardLeave}>
+              <BiLabel {...PAGE_NAMES.progress} />
+            </Link>
+          </div>
+          <BeamBand size="m" />
         </header>
         <main className="app-main">
           <Routes>
