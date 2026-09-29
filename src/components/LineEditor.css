@@ -27,6 +27,9 @@
   gap: var(--space-2) var(--group-gap);
   min-width: 0;
   overflow-x: auto;
+  /* Room inside the scroll box for a cell's focus ring (3 px + 1 px offset), without moving the layout. */
+  margin: -4px;
+  padding: 4px;
 }
 
 /* A group and its "+": the "+" wraps under the group when the row is full. */
