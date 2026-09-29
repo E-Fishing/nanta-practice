@@ -222,13 +222,13 @@ Stored in localStorage under `nanta.progress.v1`:
 
 ## 5. Visual style
 
-The look of the site is specified in **[DESIGN.md](DESIGN.md)**: direction, palette tokens for light and dark mode, type, the dancheong ornament system, the treatment of each page, and the spec for the Library landscape art (`public/art/landscape.webp`). DESIGN.md replaces the palette and ornament notes that used to be here.
+The look of the site is specified in **[DESIGN.md](DESIGN.md)**: direction, palette tokens for light and dark mode, type, the dancheong ornament system, the treatment of each page, and the Library painting (`public/art/landscape.webp`). DESIGN.md replaces the palette and ornament notes that used to be here.
 
 Hard rules. These come first, and if DESIGN.md ever conflicts with them, the rules win (this is a practice tool read from two meters away):
 - The chart/notation area, the drill tap pad and the transport bar sit on a plain, high-contrast surface with no artwork or pattern behind them. Ornament goes around them, never under.
 - Hand letters ≥ 28 px on desktop, ≥ 22 px on phones. Every notation mark (circle, triangle, underline, up-arrow, X, tilde, boxed syllable, grace letter) stays at least as legible as it was before the redesign.
 - Tap targets ≥ 56 px on phones. Drill buttons fill the bottom third of the screen. No horizontal scroll at 390 px.
-- No image over 300 KB. Landscape art is WebP and lazy-loaded. Nothing is added to the playback animation frame.
+- No image over 300 KB. The Library painting is WebP and lazy-loaded. Nothing is added to the playback animation frame.
 - No animations longer than 150 ms except the playhead.
 - Korean motifs only. Styles stay in tokens.css + component CSS, no CSS framework.
 

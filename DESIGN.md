@@ -242,9 +242,11 @@ The samtaegeuk always has three colors (vermilion, deep blue, yellow) that fill 
 │ (o) Nanta Practice                                    Progress │  header beam, jade
 │     난타 연습                                                  │
 ├))))))))))))))))))))))))))))))))((((((((((((((((((((((((((((((((┤  Band M, mirrored
-│ jade │                                                │  jade  │
-│  @   │  painting panel (별지화), 12:5, max 1280 px    │   @    │  hero beam
-│ end  │  landscape.webp or the labeled placeholder     │  end   │  (@ = rosette)
+│ jade         ┌──────────────────────────────┐          jade │
+│  @           │ painting panel (별지화), the │           @  │  hero beam
+│ end          │ whole painting, framed       │         end  │  (@ = rosette)
+│              └──────────────────────────────┘              │
+│                 김홍도 〈무동〉 · credit label                │
 ├#=====)))))))))))))))))))┏━━━━━━━━━━━━━┓(((((((((((((((((((====#┤  Band L, mirrored
                           ┃   곡 목록   ┃
                      @    ┃   Library   ┃    @     hanging plaque
@@ -258,9 +260,9 @@ The samtaegeuk always has three colors (vermilion, deep blue, yellow) that fill 
   └──────────────────────────────────┘
 ```
 
-- **Hero beam:** full viewport width, with a `--beam` ground. The painting panel is centered at `min(100%, 1280px)` wide and 12:5 in shape, capped at `60vh` (minimum 240 px) so the plaque stays in the first screen. A 4 px `vermilion-600` frame surrounds it, with a 1 px `gold-500` line inside. The **end zones** are the jade fields left and right of the panel. When a zone is at least 128 px wide it shows a rosette, sized to the zone's width minus 32 px and at most 128 px, centered. Narrower zones stay plain jade. At 1280 px viewports and below, the painting runs edge to edge and the side frames drop.
-- **Plaque:** hanging, 곡 목록 over "Library". A rosette sits on the band on each side of it, 48 px (32 px on phones) and 16 px clear of the plaque. The painting credit arrives with the painting (§6).
-- **Phones (≤ 600 px):** the painting is full-bleed at **3:2** (390 × 260 px on a 390 px phone), under the header band and above a 16 px Band L, with the plaque hanging from that band.
+- **Hero beam:** full viewport width, with a `--beam` ground. The painting hangs in the middle as a framed panel, shown **whole at its own aspect ratio**, never cropped. The ratio comes from the image's pixel size (`--art-w` / `--art-h`, set in `LandscapeHero.tsx`). The panel is `min(58vh, 560px)` tall, and never wider than the page column, so the plaque stays in the first screen. A 4 px `vermilion-600` frame with a 1 px `gold-500` line inside and a 1 px ink line outside surrounds it. A credit label sits under the frame on the jade (§6). The **end zones** are the jade fields left and right. When a zone is at least 128 px wide it shows a rosette, sized to the zone's width minus 48 px and at most 176 px, centered.
+- **Plaque:** hanging, 곡 목록 over "Library". A rosette sits on the band on each side of it, 48 px (32 px on phones) and 16 px clear of the plaque. The painting's credit sits under its frame, in the hero.
+- **Phones (≤ 600 px):** the framed painting is at most 46vh tall and at most the page column wide, centered on the jade (330 × 388 px on a 390 × 844 phone), above a 16 px Band L with the plaque hanging from it.
 - The **member field** and **"+ New piece"** share one row, which wraps on phones: the button goes full width below the field. **Cards** get a Band M lintel. Titles use `--font-display` 700 at 28 / 24 px. Practice uses `--action`; Drills and Edit are secondary. The "saved in this browser" badge keeps its `--reveal` outline.
 
 ### 5.3 Player `/play/:pieceId`: 모로단청, ends only
@@ -316,36 +318,26 @@ Errors and loading messages get the header beam only. Error cards are paper with
 
 ---
 
-## 6. Landscape art: `public/art/landscape.webp`
+## 6. The painting: `public/art/landscape.webp`
+
+The club chose **Kim Hong-do (김홍도, Danwon), *Dancing Boy* (무동)**, a leaf from his album of genre paintings (late 18th century), which is held by the National Museum of Korea. A boy dances while six seated musicians play a drum, a janggu, two piri, a daegeum and a haegeum. It is a portrait painting, not a landscape. The file keeps the agreed name.
 
 | | |
 |---|---|
-| **Pixel size** | **1920 × 800 px, exactly** |
-| **Aspect ratio** | **12:5 (2.4:1)** |
-| **Format** | WebP, lossy, quality about 70–80, sRGB, no alpha, metadata stripped |
-| **File size** | **≤ 300 KB, hard limit** (aim for 180–260 KB) |
-| **Safe area** | The subject (peaks, pavilion, cranes, whatever the painting is about) goes inside the **central 1200 × 560 px box** (x 360–1560, y 120–680) |
-| **Keep out** | Added text, watermarks, borders or frames (the site draws the frame). If the painting's seals or inscription matter, keep them inside the safe area |
+| **File** | WebP, **598 × 703 px** (ratio 0.85), 177 KB |
+| **Made from** | The club's 601 × 707 scan. It was trimmed 2 px left, 1 px right and 4 px at the bottom to remove dark scan edges, then re-encoded at quality 0.95. Nothing was redrawn |
+| **Limit** | **≤ 300 KB**, hard limit |
+| **Shown** | Whole, at its own aspect ratio, never cropped (§5.2) |
 
-**Why these numbers.**
-- The painting panel is at most 1280 CSS px wide, so 1920 px gives 1.5× sharpness on desktop while staying under 300 KB. A 2560 px file would not fit the budget at a decent quality.
-- Phones show a centered 3:2 crop, which is the middle 1200 px of the width.
-- On short desktop screens the panel height is capped at 60vh. On a 1366 × 768 laptop that trims about 110 px from the top and bottom of the file, inside the safe area's margin.
-- If the source is a folding screen or a handscroll, crop a horizontal detail. If it is a tall hanging scroll, take a horizontal band of it.
+**Why whole, not a 12:5 crop.** The original spec asked for a 1920 × 800 landscape. A 12:5 crop of this painting would be a thin band that cuts off either the dancer or the musicians, and it would have to be enlarged about 3× from a 598 px wide scan. So the hero adapts to the painting instead. A painting of any shape works: set `width`/`height` in `LandscapeHero.tsx` to the file's pixel size, and the frame follows.
 
-**Making the file** (for example from a PNG or JPEG export of the painting):
-
-```bash
-cwebp -q 75 -m 6 -metadata none -crop X Y W H -resize 1920 800 source.png -o public/art/landscape.webp
-```
-
-Choose `W:H` = 12:5 for the crop. If the result is over 300 KB, lower `-q` to 65–70. Squoosh (squoosh.app) does the same in a browser.
+**Sharpness.** The panel shows the painting at up to 560 CSS px tall, so this scan is sharp on ordinary screens and slightly soft on high-density ones (2×). A higher-resolution scan of the same leaf, about 1100 px tall or more and still ≤ 300 KB as WebP, would fix that without any code change beyond the size.
 
 **How the site shows it.**
-- `<img src="art/landscape.webp" width="1920" height="800" loading="lazy" decoding="async" alt="">` inside the hero panel, with `object-fit: cover` centered. The painting is decorative here; its title and credit go in a visible caption.
-- The panel reserves its box, so nothing shifts when the image arrives. Until then the panel shows `ivory-200`.
-- If the image fails to load (the file is not there yet), the same box shows the **placeholder**: flat `ivory-200` with a 2 px dashed ink border inset 8 px, and centered text. It reads **"Landscape art placeholder"**, and below it: "add public/art/landscape.webp · 1920 × 800 px WebP · ≤ 300 KB". The ornament frame and end zones still draw around it. The placeholder contains no picture, gradient or drawn scenery.
-- **Credit:** one line of `--fg-muted` 13 px text under the hero band, right-aligned (on phones, under the plaque): painting title, artist, collection and license. You supply the text with the file. If the painting comes from a museum, check its license; Korean public collections often use KOGL (공공누리) terms that require a credit line.
+- `<img src="art/landscape.webp" width="598" height="703" loading="lazy" decoding="async" alt="…">` inside the framed panel. The alt text describes the scene.
+- The panel reserves its box, so nothing shifts when the image arrives. Until then it shows `ivory-200`.
+- **Credit** (a `<figcaption>` under the frame, 12 px, on the jade): 김홍도 〈무동〉 · Kim Hong-do, *Dancing Boy*, late 18th century · National Museum of Korea. Check the museum's terms for the scan you use; Korean public collections often use KOGL (공공누리) terms that require exactly this kind of credit line.
+- If the image fails to load, the same box shows a **placeholder**: flat `ivory-200` with a 2 px dashed ink border inset 8 px. It reads "Painting placeholder" and "add public/art/landscape.webp · WebP ≤ 300 KB", and the credit is hidden. The placeholder contains no picture, gradient or drawn scenery.
 - The painting is supplied by the club. Implementation never fetches or generates one.
 
 ---
@@ -360,8 +352,8 @@ How each rule in SPEC.md §5 is met, and how to prove it at the end of the style
 | Hand letters ≥ 28 / 22 px | `--hand-size` unchanged | Computed size of `.cell-letter` at 1280 and 390 px |
 | Marks as legible as now | §2.4 (all pairs ≥ now); marks keep `currentColor` and their sizes; notation-font check in §3 | Legend and placeholder chart, before and after, read at 2 m on a phone |
 | Tap targets ≥ 56 px on phones | Fix list below | Script at 390 px: every `a`, `button`, `select`, text or range `input`, `summary`, and the `label` around each checkbox is at least 56 px in both dimensions (except the editor cells, see §9) |
-| No horizontal scroll at 390 px | No `100vw`; bleed with negative margins; hero ends hidden ≤ 1280 px; header labels stack; plaques wrap | `document.documentElement.scrollWidth === innerWidth` on every route, both themes, with a long piece title |
-| No image over 300 KB; WebP; lazy | One landscape (≤ 300 KB); tiles ≤ 4 KB; texture ≤ 8 KB | `ls -l public/art dist/assets`; network panel shows `loading="lazy"` |
+| No horizontal scroll at 390 px | No `100vw` for layout; bleed with negative margins; the painting panel is never wider than the page column; header labels stack; plaques wrap | `document.documentElement.scrollWidth === innerWidth` on every route, both themes, with a long piece title |
+| No image over 300 KB; WebP; lazy | One painting (177 KB); tiles and texture are data URIs under 1 KB each | `ls -l public/art dist/assets`; network panel shows `loading="lazy"` |
 | Nothing added to the playback frame | Static CSS only; no new state, effect, listener, animation or filter | Performance recording of 10 s of playback at 325 pulses/min, before and after: no increase per highlight step; Paint flashing shows only the changed cells |
 | Animations ≤ 150 ms | None added; hover transitions stay 120 ms | Search the CSS for `transition` and `animation` |
 | tokens.css + component CSS | Tokens in `tokens.css`, tiles in `src/styles/ornament/`, each component its own CSS | Review |
@@ -394,4 +386,4 @@ How each rule in SPEC.md §5 is met, and how to prove it at the end of the style
 1. **Editor cells on phones** are exempt from the 56 px width only. A chart cell is about 30 px wide at 390 px, and it has to stay that narrow for a 10-cell group to fit without horizontal scrolling. Cells are at least 56 px tall, and every other editor control, the "+" add-cell button included, is 56 × 56 px.
 2. **Jade primary buttons** (Play, Practice, Save, selected choices) and the **light-blue dark-mode playhead** with ink letters.
 3. **Bilingual names.** Every nav item and page title shows the Korean as display text with the English label beneath in smaller type, e.g. 암기 훈련 over Drills. Buttons and controls stay English. The names are 난타 연습 / Nanta Practice, 곡 목록 / Library, 연습 / Player, 암기 훈련 / Drills, 연습 기록 / Progress and 악보 편집 / Editor.
-4. **Landscape art.** The file is not in place yet, so the Library shows the labeled placeholder until `public/art/landscape.webp` exists.
+4. **The painting** is Kim Hong-do's *Dancing Boy* (무동), shown whole rather than cropped to 12:5 (§6). The labeled placeholder only appears if `public/art/landscape.webp` is missing.
